@@ -16,6 +16,8 @@ import {
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
+import Lesson from '../../../Lesson/Lesson'
+
 
 let plotId = 1;
 
@@ -513,6 +515,8 @@ export default function StudentCanvas({ activity }) {
           plotId={plotId}
         />          
       </div>
+
+      <Lesson/>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
       <xml id='toolbox' is='Blockly workspace'>
