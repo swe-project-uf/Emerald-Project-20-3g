@@ -172,6 +172,16 @@ export default function LessonEditor({
           tab={tab}
         />
       ) : null}
+       {/*Button to enable side-by-side view for students (implementation pending) */}
+      <div style={{textAlign: "center", marginTop: "20px"}}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => {}}
+          >
+            Allow Lesson/Instruction side-by-side
+          </Button>
+      </div>
     </div>
   )
 }
