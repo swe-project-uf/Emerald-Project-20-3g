@@ -17,6 +17,7 @@ import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
+import { Link } from 'react-router-dom';
 
 let plotId = 1;
 
@@ -350,14 +351,51 @@ export default function StudentCanvas({ activity }) {
     </Menu>
   );
 
+  const AssignmentButtons = () => {
+    return (
+        <div>
+          <Link to="https://gisgeography.com/wp-content/uploads/2020/04/Arkansas-Outline-Map.jpg">
+            <button className="assignment-button">Assignment 1</button>
+          </Link>
+          <Link to="https://kidsactivitiesblog.com/wp-content/uploads/2021/07/United-States-Map-Coloring-Pages-Screenshot.jpg">
+            <button className="assignment-button">Assignment 2</button>
+          </Link>
+          {/* Add more buttons for other assignments as needed */}
+        </div>
+    );
+  };
+
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
+      <style>
+        {`
+          .assignment-button {
+            background-color: blue;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+
+          .assignment-button:hover {
+            background-color: #0056b3;
+          }
+
+          .assignment-button:focus {
+            outline: none;
+          }
+        `}
+      </style>
       <div className='flex flex-column'>
         <Lesson
           lesson_title='Sample Lesson Title'
           lesson_contents='Sample lesson content'
         />
         <div className='flex flex-row'>
+          <AssignmentButtons /> {/*  buttons */}
           <div
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
