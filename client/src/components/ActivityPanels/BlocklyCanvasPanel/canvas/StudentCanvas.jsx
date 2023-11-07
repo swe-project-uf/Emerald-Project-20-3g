@@ -353,33 +353,42 @@ export default function StudentCanvas({ activity }) {
 
   const AssignmentButtons = () => {
     return (
-        <div>
-          <Link to="https://gisgeography.com/wp-content/uploads/2020/04/Arkansas-Outline-Map.jpg">
-            <button className="assignment-button">Assignment 1</button>
-          </Link>
-          <Link to="https://kidsactivitiesblog.com/wp-content/uploads/2021/07/United-States-Map-Coloring-Pages-Screenshot.jpg">
-            <button className="assignment-button">Assignment 2</button>
-          </Link>
+        <div className='flex flex-row'>
+          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+            <p>Previous</p>
+          </div>
+          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+            <p>Next</p>
+          </div>
           {/* Add more buttons for other assignments as needed */}
         </div>
     );
   };
 
+  const handleSelection = (activity) => {
+    window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
+  };
+
+
+
+  const assignmentButtonStyle = {
+    color: '#FFFFFF',
+    backgroundColor: '#5BABDE',
+    border: 'none',
+    padding: '10px 20px',
+    margin: '5px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    width: '40%',
+    height: '70%',
+    marginLeft: '5%',
+    marginRight: '5%'
+  }
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <style>
         {`
-          .assignment-button {
-            background-color: blue;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-          }
-
           .assignment-button:hover {
             background-color: #0056b3;
           }
@@ -390,12 +399,14 @@ export default function StudentCanvas({ activity }) {
         `}
       </style>
       <div className='flex flex-column'>
-        <Lesson
-          lesson_title='Sample Lesson Title'
-          lesson_contents='Sample lesson content'
-        />
         <div className='flex flex-row'>
-          <AssignmentButtons /> {/*  buttons */}
+          <div className='flex flex-column'>
+            <AssignmentButtons /> {/*  buttons */}
+            <Lesson
+              lesson_title='Sample Lesson Title'
+              lesson_contents='Sample lesson content'
+            />
+          </div>
           <div
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
