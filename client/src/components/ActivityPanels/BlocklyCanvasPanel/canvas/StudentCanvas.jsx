@@ -17,6 +17,7 @@ import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
+import { Link } from 'react-router-dom';
 
 let plotId = 1;
 
@@ -350,14 +351,62 @@ export default function StudentCanvas({ activity }) {
     </Menu>
   );
 
+  const AssignmentButtons = () => {
+    return (
+        <div className='flex flex-row'>
+          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+            <p>Previous</p>
+          </div>
+          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+            <p>Next</p>
+          </div>
+          {/* Add more buttons for other assignments as needed */}
+        </div>
+    );
+  };
+
+  const handleSelection = (activity) => {
+    window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
+  };
+
+
+
+  const assignmentButtonStyle = {
+    color: '#FFFFFF',
+    backgroundColor: '#5BABDE',
+    border: 'none',
+    padding: '10px 20px',
+    margin: '5px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    width: '40%',
+    height: '70%',
+    marginLeft: '5%',
+    marginRight: '5%'
+  }
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
+      <style>
+        {`
+          .assignment-button:hover {
+            background-color: #0056b3;
+          }
+
+          .assignment-button:focus {
+            outline: none;
+          }
+        `}
+      </style>
       <div className='flex flex-column'>
-        <Lesson
-          lesson_title='Sample Lesson Title'
-          lesson_contents='Sample lesson content'
-        />
         <div className='flex flex-row'>
+          <div className='flex flex-column'>
+            <AssignmentButtons /> {/*  buttons */}
+            <Lesson
+              lesson_title='Sample Lesson Title'
+              lesson_contents='Sample lesson content'
+            />
+          </div>
           <div
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
