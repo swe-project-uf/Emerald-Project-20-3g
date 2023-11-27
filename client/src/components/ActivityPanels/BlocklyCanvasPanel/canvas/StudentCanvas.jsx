@@ -353,11 +353,29 @@ export default function StudentCanvas({ activity }) {
 
   const AssignmentButtons = () => {
     return (
-        <div className='flex flex-row'>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+        <div className='flex flex-row' style={{width: '100%', justifyContent:'space-between'}}>
+          <div id="targetBtn" 
+          onMouseOver={()=>{
+            document.getElementById("targetBtn").style.backgroundColor = "white";
+            document.getElementById("targetBtn").style. color = "#5CABDE";
+          }} 
+          onMouseOut={()=>{
+            document.getElementById("targetBtn").style.backgroundColor = "#5CABDE";
+            document.getElementById("targetBtn").style. color = "white";
+          }} 
+          style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
             <p>Previous</p>
           </div>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+          <div id="targetBtn2" 
+          onMouseOver={()=>{
+            document.getElementById("targetBtn2").style.backgroundColor = "white";
+            document.getElementById("targetBtn2").style. color = "#5CABDE";
+          }} 
+          onMouseOut={()=>{
+            document.getElementById("targetBtn2").style.backgroundColor = "#5CABDE";
+            document.getElementById("targetBtn2").style. color = "white";
+          }} 
+          style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
             <p>Next</p>
           </div>
           {/* Add more buttons for other assignments as needed */}
@@ -369,8 +387,6 @@ export default function StudentCanvas({ activity }) {
     window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
   };
 
-
-
   const assignmentButtonStyle = {
     color: '#FFFFFF',
     backgroundColor: '#5BABDE',
@@ -380,10 +396,32 @@ export default function StudentCanvas({ activity }) {
     borderRadius: '5px',
     cursor: 'pointer',
     width: '40%',
+    minWidth: 'fit-content',
     height: '70%',
-    marginLeft: '5%',
-    marginRight: '5%'
+    // marginLeft: '5%',
+    // marginRight: '5%'
   }
+
+  function handleResize(){
+    const resizeContainer = document.getElementById('resizeContainer');
+
+    if (resizeContainer) {
+      const windowWidth = window.innerWidth;
+      if (windowWidth <= 750) {
+        resizeContainer.style.flexDirection = 'column';
+      } else {
+        resizeContainer.style.flexDirection = 'row';
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -399,8 +437,8 @@ export default function StudentCanvas({ activity }) {
         `}
       </style>
       <div className='flex flex-column'>
-        <div className='flex flex-row'>
-          <div className='flex flex-column'>
+        <div id="resizeContainer" className='flex flex-row' onResize={handleResize}>
+          <div className='flex flex-column' style={{padding:'1.5rem', alignItems: 'center'}}>
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
               lesson_title='Sample Lesson Title'
