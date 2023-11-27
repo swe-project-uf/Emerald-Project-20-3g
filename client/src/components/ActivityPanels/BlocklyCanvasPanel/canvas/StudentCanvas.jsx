@@ -17,6 +17,7 @@ import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
+import SplitPane from "react-split-pane-v2"
 
 let plotId = 1;
 
@@ -353,11 +354,14 @@ export default function StudentCanvas({ activity }) {
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-column'>
-        <Lesson
-          lesson_title='Sample Lesson Title'
-          lesson_contents='Sample lesson content'
-        />
         <div className='flex flex-row'>
+          <SplitPane split='vertical' minSize={50} defaultSize={100}>
+          <div className='flex flex-column'>
+            <Lesson
+              lesson_title='Sample Lesson Title'
+              lesson_contents='Sample lesson content'
+            />
+          </div>
           <div
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
@@ -504,6 +508,7 @@ export default function StudentCanvas({ activity }) {
               <div id='blockly-canvas' />
             </Spin>
           </div>
+          </SplitPane>
           </div>
 
           <ConsoleModal
