@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../ActivityLevels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
-import { getSaves } from '../../../../Utils/requests';
+import {getSaves, getStudentClassroom} from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -351,6 +351,7 @@ export default function StudentCanvas({ activity }) {
     </Menu>
   );
 
+  /*
   const AssignmentButtons = () => {
     return (
         <div className='flex flex-row'>
@@ -360,15 +361,126 @@ export default function StudentCanvas({ activity }) {
           <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
             <p>Next</p>
           </div>
-          {/* Add more buttons for other assignments as needed */}
         </div>
     );
   };
 
+   */
+
+
+
+  const AssignmentButtons = () => {
+    const [learningStandard, setLessonModule] = useState({});
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await getStudentClassroom();
+          if (res.data) {
+            if (res.data.lesson_module) {
+              setLessonModule(res.data.lesson_module);
+            }
+          } else {
+            message.error(res.err);
+          }
+        } catch {}
+      };
+      fetchData();
+    }, []);
+
+    const handleSelection = ( newActivity ) => {
+      newActivity.lesson_module_name = learningStandard.name;
+      localStorage.setItem('my-activity', JSON.stringify(newActivity));
+
+      navigate(`/workspace/test`);
+    };
+
+    const handleNavigation = async (direction) => {
+      const currentIndex = learningStandard.activities.findIndex(
+          (act) => act.id === activity.id
+      );
+
+      let newIndex;
+
+      {learningStandard.activities ? (
+          learningStandard.activities
+              .sort((activity1, activity2) => activity1.number - activity2.number)
+              .map((activity) => (
+                  <div
+                      key={activity.id}
+                      id='list-item-wrapper'
+                      //onClick={() => handleSelection(activity)}
+                  >
+                    <li>{`${learningStandard.name}: Activity ${activity.number}`}</li>
+                  </div>
+              ))
+      ) : (
+          <div>
+            <p>There is currently no active learning standard set.</p>
+            <p>
+              When your classroom manager selects one, it will appear here.
+            </p>
+          </div>
+      )}
+
+      if (direction === 'previous' && learningStandard.activities) {
+        console.log("in the previous");
+        if (currentIndex !== 0){
+          newIndex = currentIndex - 1;
+        }
+        else{
+          console.log("At first activity");
+          //newIndex = 0;
+        }
+        console.log("newIndex: " + newIndex);
+      } else if (direction === 'next' && learningStandard.activities) {
+          if (currentIndex === learningStandard.activities.length - 1){
+              console.log("At last activity");
+            }
+        else {
+            newIndex = currentIndex + 1;
+          }
+        console.log("in the next");
+        console.log("newIndex: " + newIndex);
+      }
+
+      if (newIndex >= 0 && newIndex < learningStandard.activities.length) {
+        const newActivity = learningStandard.activities[newIndex];
+        // Fetch data for the new activity (adjust this based on your data fetching logic)
+        // For example:
+        // const newData = await fetchDataForActivity(newActivity.id);
+        // Update the state or perform any necessary actions with the new data
+
+        // Navigate to the new activity
+        console.log("Entered logic to go to new workspace");
+        handleSelection(newActivity);
+      }
+    };
+
+    return (
+        <div className='flex flex-row'>
+          <div
+              style={assignmentButtonStyle}
+              onClick={() => handleNavigation('previous')}
+          >
+            <p>Previous</p>
+          </div>
+          <div
+              style={assignmentButtonStyle}
+              onClick={() => handleNavigation('next')}
+          >
+            <p>Next</p>
+          </div>
+        </div>
+    );
+  };
+
+/*
   const handleSelection = (activity) => {
     window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
   };
-
+*/
 
 
   const assignmentButtonStyle = {
@@ -403,8 +515,9 @@ export default function StudentCanvas({ activity }) {
           <div className='flex flex-column'>
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
-              lesson_title='Sample Lesson Title'
-              lesson_contents='Sample lesson content'
+              lesson_title= 'The Boggart'
+              lesson_contents='Sample lesson content dfslkjdflsjaglksj;gkahfjgsfjskdf
+              dfjskdfj'
             />
           </div>
           <div
