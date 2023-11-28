@@ -412,7 +412,7 @@ export default function StudentCanvas({ activities, index }) {
     border: 'none',
     padding: '10px 20px',
     margin: '5px',
-    borderRadius: '5px',
+    borderRadius: '80px',
     cursor: 'pointer',
     width: '40%',
     height: '70%',
