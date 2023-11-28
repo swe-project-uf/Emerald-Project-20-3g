@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../ActivityLevels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
-import {getSaves, getStudentClassroom} from '../../../../Utils/requests';
+import {getActivityToolbox, getSaves, getStudentClassroom} from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -18,6 +18,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
 import { Link } from 'react-router-dom';
+import BlocklyCanvasPanel from "../BlocklyCanvasPanel";
 
 let plotId = 1;
 
@@ -372,6 +373,7 @@ export default function StudentCanvas({ activity }) {
   const AssignmentButtons = () => {
     const [learningStandard, setLessonModule] = useState({});
     const navigate = useNavigate();
+    const [activityChange, setActivity] = useState({});
 
     useEffect(() => {
       const fetchData = async () => {
@@ -387,13 +389,37 @@ export default function StudentCanvas({ activity }) {
         } catch {}
       };
       fetchData();
+
+
+      const localActivity = JSON.parse(localStorage.getItem('my-activity'));
+      if (localActivity) {
+        if (localActivity.toolbox) {
+          setActivity(localActivity);
+        } else {
+          getActivityToolbox(localActivity.id).then((res) => {
+            if (res.data) {
+              let loadedActivity = { ...localActivity, toolbox: res.data.toolbox };
+
+              localStorage.setItem('my-newActivity', JSON.stringify(loadedActivity));
+              setActivity(loadedActivity);
+              handleSelection(loadedActivity);
+            } else {
+              message.error(res.err);
+            }
+          });
+        }
+      } else {
+        navigate(-1);
+      }
+
     }, []);
+
 
     const handleSelection = ( newActivity ) => {
       newActivity.lesson_module_name = learningStandard.name;
-      localStorage.setItem('my-activity', JSON.stringify(newActivity));
+      localStorage.setItem('my-newActivity', JSON.stringify(newActivity));
 
-      navigate(`/workspace/test`);
+      navigate(`/workspace`);
     };
 
     const handleNavigation = async (direction) => {
@@ -425,7 +451,6 @@ export default function StudentCanvas({ activity }) {
       )}
 
       if (direction === 'previous' && learningStandard.activities) {
-        console.log("in the previous");
         if (currentIndex !== 0){
           newIndex = currentIndex - 1;
         }
@@ -441,20 +466,26 @@ export default function StudentCanvas({ activity }) {
         else {
             newIndex = currentIndex + 1;
           }
-        console.log("in the next");
         console.log("newIndex: " + newIndex);
       }
 
       if (newIndex >= 0 && newIndex < learningStandard.activities.length) {
-        const newActivity = learningStandard.activities[newIndex];
-        // Fetch data for the new activity (adjust this based on your data fetching logic)
-        // For example:
-        // const newData = await fetchDataForActivity(newActivity.id);
-        // Update the state or perform any necessary actions with the new data
+        const newActivityId = learningStandard.activities[newIndex].id;
 
-        // Navigate to the new activity
-        console.log("Entered logic to go to new workspace");
-        handleSelection(newActivity);
+        // Fetch the details of the new activity using the ID
+        const res = await getStudentClassroom();
+
+        if (res.data) {
+          const newActivity = res.data; // Replace with the actual property containing the activity details
+
+          // Update local storage with the new activity
+          localStorage.setItem('my-activity', JSON.stringify(newActivity));
+
+          // Navigate to the new activity
+          navigate(`/workspace`);
+        } else {
+          message.error('Failed to fetch the details of the new activity.');
+        }
       }
     };
 
