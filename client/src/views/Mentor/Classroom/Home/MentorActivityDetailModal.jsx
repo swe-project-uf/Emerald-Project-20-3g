@@ -35,6 +35,7 @@ const MentorActivityDetailModal = ({
   const [linkError, setLinkError] = useState(false)
   const [submitButton, setSubmitButton] = useState(0)
   const navigate = useNavigate()
+  const [checked, setChecked] = useState(false); 
 
   useEffect(() => {
     const showActivityDetailsModal = async () => {
@@ -73,6 +74,14 @@ const MentorActivityDetailModal = ({
     }
     showActivityDetailsModal()
   }, [selectActivity])
+
+  function handleSplitPaneChange(e) {
+    setChecked(e.target.checked);
+  }
+
+  function updateSplitView({splitViewUpdate}){
+    splitViewUpdate(checked);
+  }
 
   const checkURL = n => {
     const regex =
@@ -244,6 +253,11 @@ const MentorActivityDetailModal = ({
             setComponents={setComputationComponents}
             colorOffset={7}
           />
+        </Form.Item>
+        <h3 id="subtitle">Split pane view for student workspace</h3>
+        <Form.Item id="form-label" label="Split pane view">
+          <input value="split-pane" type="checkbox" onChange={handleSplitPaneChange} />
+          <span> Enable split pane view </span>
         </Form.Item>
         <h3 id="subtitle">Additional Information</h3>
         <Form.Item

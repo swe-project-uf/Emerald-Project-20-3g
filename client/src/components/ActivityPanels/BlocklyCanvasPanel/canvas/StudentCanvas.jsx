@@ -17,6 +17,7 @@ import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
+import updateSplitView from '../../../../views/Mentor/Classroom/Home/MentorActivityDetailModal';
 import SplitPane, {Pane} from "react-split-pane-v2"
 
 let plotId = 1;
@@ -37,6 +38,7 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
+  const [splitPaneView, setSplitPane] = useState(false);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -45,6 +47,10 @@ export default function StudentCanvas({ activity }) {
 
   const replayRef = useRef([]);
   const clicks = useRef(0);
+
+  function splitViewUpdate(checked){
+    setSplitPane(checked);
+  }
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -355,6 +361,9 @@ export default function StudentCanvas({ activity }) {
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-column'>
         <div className='flex flex-row'>
+          <updateSplitView
+            splitViewUpdate = {splitViewUpdate}
+          />
           <SplitPane split='vertical'>
           <Pane minSize='150px' initialSize='300px' maxSize='700px'>
             <Lesson
