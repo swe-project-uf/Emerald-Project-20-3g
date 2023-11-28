@@ -10,10 +10,39 @@ import {
 } from "../../Utils/requests"
 import { useGlobalState } from "../../Utils/userState"
 
+async function getActivities() {
+  try {
+    const res = await getStudentClassroom();
+    if (res.data) {
+      if (res.data.lesson_module && res.data.lesson_module.activities) {
+        return res.data.lesson_module.activities || [];
+      }
+    } else {
+      message.error(res.err);
+    }
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+  console.log("bp ", activitiesData);
+}
+
 export default function BlocklyPage({ isSandbox }) {
   const [value] = useGlobalState("currUser")
   const [activity, setActivity] = useState({})
-  const navigate = useNavigate()
+  const [activities, setActivities] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      const activitiesData = await getActivities();
+      setActivities(activitiesData);
+    }
+    
+    fetchData();
+  }, []);
+
+  
 
   useEffect(() => {
     const setup = async () => {
@@ -76,7 +105,7 @@ export default function BlocklyPage({ isSandbox }) {
     <div className="container nav-padding">
       <NavBar />
       <div className="flex flex-row">
-        <BlocklyCanvasPanel activity={activity} setActivity={setActivity} isSandbox={isSandbox} />
+        <BlocklyCanvasPanel activity={activity} setActivity={setActivity} isSandbox={isSandbox} activities={activities} />
       </div>
     </div>
   )

@@ -21,7 +21,9 @@ import { Link } from 'react-router-dom';
 
 let plotId = 1;
 
-export default function StudentCanvas({ activity }) {
+export default function StudentCanvas({ activities, index }) {
+// export default function StudentCanvas({ activity}) {
+
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -37,6 +39,8 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
+  const [currentActivityIndex, setCurrentActivityIndex] = useState(index);
+  const [activity, setActivity] = useState(activities[index]);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -354,10 +358,10 @@ export default function StudentCanvas({ activity }) {
   const AssignmentButtons = () => {
     return (
         <div className='flex flex-row'>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('previous')}>
             <p>Previous</p>
           </div>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('next')}>
             <p>Next</p>
           </div>
           {/* Add more buttons for other assignments as needed */}
@@ -365,10 +369,41 @@ export default function StudentCanvas({ activity }) {
     );
   };
 
-  const handleSelection = (activity) => {
-    window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
-  };
+  // button selection handler
+  const handleActivitySelection = (selection) => {
+    // if next was clicked
+    if (selection === 'next') {
+      // set current activity to the next one if it exists
+      const nextIndex = currentActivityIndex + 1;
+      if (nextIndex < activities.length) {
+        setCurrentActivityIndex(nextIndex);
+        // current activity = activities[nextIndex]
+        activities[nextIndex].lesson_module_name = learningStandard.name;
+        setActivity(activities[nextIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    // if prev was clicked
+    } else if (selection === 'prev') { 
+      // set current activity to the previous one if it exists
+      const prevIndex = currentActivityIndex - 1;
+      if (prevIndex >= 0) {
+        setCurrentActivityIndex(prevIndex);
+        // current activity = activities[prevIndex]
+        activities[prevIndex].lesson_module_name = learningStandard.name;
+        setActivity(activities[prevIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    }
 
+    activity.lesson_module_name = learningStandard.name;
+    localStorage.setItem('my-activity', JSON.stringify(activity));
+    navigate('/workspace');
+
+    // placeholder functionality
+    window.open('https://www.google.com/search?q=' + selection + '+assignment', '_blank');
+  };
 
 
   const assignmentButtonStyle = {

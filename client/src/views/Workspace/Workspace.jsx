@@ -5,32 +5,59 @@ import { message } from 'antd';
 import NavBar from '../../components/NavBar/NavBar';
 import { useNavigate } from 'react-router-dom';
 
-export default function Workspace({ handleLogout }) {
-  const [activity, setActivity] = useState({});
-
-  useEffect(() => {
-    const localActivity = JSON.parse(localStorage.getItem('my-activity'));
-    const navigate = useNavigate();
-
-    if (localActivity) {
-      if (localActivity.toolbox) {
-        setActivity(localActivity);
-      } else {
-        getActivityToolbox(localActivity.id).then((res) => {
-          if (res.data) {
-            let loadedActivity = { ...localActivity, toolbox: res.data.toolbox };
-
-            localStorage.setItem('my-activity', JSON.stringify(loadedActivity));
-            setActivity(loadedActivity);
-          } else {
-            message.error(res.err);
-          }
-        });
+async function getActivities() {
+  try {
+    const res = await getStudentClassroom();
+    console.log("wkspc got student classrooms");
+    if (res.data) {
+      if (res.data.lesson_module && res.data.lesson_module.activities) {
+        return res.data.lesson_module.activities || [];
       }
     } else {
-      navigate(-1);
+      message.error(res.err);
     }
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export default function Workspace({ handleLogout }) {
+  const [activity, setActivity] = useState({});
+  const [activities, setActivities] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      const activitiesData = await getActivities();
+      setActivities(activitiesData);
+    }
+    
+    fetchData();
   }, []);
+
+  console.log("hello workspace")
+
+  const localActivity = JSON.parse(localStorage.getItem('my-activity'));
+  
+  if (localActivity) {
+    if (localActivity.toolbox) {
+      setActivity(localActivity);
+    } else {
+      getActivityToolbox(localActivity.id).then((res) => {
+        if (res.data) {
+          let loadedActivity = { ...localActivity, toolbox: res.data.toolbox };
+
+          localStorage.setItem('my-activity', JSON.stringify(loadedActivity));
+          setActivity(loadedActivity);
+        } else {
+          message.error(res.err);
+        }
+      });
+    }
+  } else {
+    navigate(-1);
+  }
 
   const handleGoBack = () => {
     navigate(-1);
@@ -45,6 +72,7 @@ export default function Workspace({ handleLogout }) {
         handleGoBack={handleGoBack}
         handleLogout={handleLogout}
         isStudent={true}
+        activities={activities}
       />
     </div>
   );
