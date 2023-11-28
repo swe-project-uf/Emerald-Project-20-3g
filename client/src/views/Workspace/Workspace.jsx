@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 async function getActivities() {
   try {
     const res = await getStudentClassroom();
-    console.log("wkspc got student classrooms");
     if (res.data) {
       if (res.data.lesson_module && res.data.lesson_module.activities) {
         return res.data.lesson_module.activities || [];
@@ -35,8 +34,6 @@ export default function Workspace({ handleLogout }) {
     
     fetchData();
   }, []);
-
-  console.log("hello workspace")
 
   const localActivity = JSON.parse(localStorage.getItem('my-activity'));
   

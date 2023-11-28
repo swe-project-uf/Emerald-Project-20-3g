@@ -21,8 +21,7 @@ import { Link } from 'react-router-dom';
 
 let plotId = 1;
 
-export default function StudentCanvas({ activities, index }) {
-// export default function StudentCanvas({ activity}) {
+export default function StudentCanvas({ activities, index, setIndex, learningStandard }) {
 
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
@@ -39,7 +38,6 @@ export default function StudentCanvas({ activities, index }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
-  const [currentActivityIndex, setCurrentActivityIndex] = useState(index);
   const [activity, setActivity] = useState(activities[index]);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
@@ -213,6 +211,7 @@ export default function StudentCanvas({ activities, index }) {
         workspaceRef.current.clearUndo();
       }
     };
+    console.log("setting workspace on activity update");
     setUp();
   }, [activity]);
 
@@ -371,38 +370,28 @@ export default function StudentCanvas({ activities, index }) {
 
   // button selection handler
   const handleActivitySelection = (selection) => {
-    // if next was clicked
     if (selection === 'next') {
       // set current activity to the next one if it exists
-      const nextIndex = currentActivityIndex + 1;
+      const nextIndex = index + 1;
       if (nextIndex < activities.length) {
-        setCurrentActivityIndex(nextIndex);
-        // current activity = activities[nextIndex]
-        activities[nextIndex].lesson_module_name = learningStandard.name;
+        setIndex(nextIndex);
+        activities[nextIndex].lesson_module_name = learningStandard;
         setActivity(activities[nextIndex]);
         localStorage.setItem('my-activity', JSON.stringify(activity));
         navigate('/workspace');
       }
-    // if prev was clicked
-    } else if (selection === 'prev') { 
+    } else if (selection === 'previous') { 
       // set current activity to the previous one if it exists
-      const prevIndex = currentActivityIndex - 1;
+      const prevIndex = index - 1;
       if (prevIndex >= 0) {
-        setCurrentActivityIndex(prevIndex);
-        // current activity = activities[prevIndex]
-        activities[prevIndex].lesson_module_name = learningStandard.name;
+        setIndex(prevIndex);
+        activities[prevIndex].lesson_module_name = learningStandard;
         setActivity(activities[prevIndex]);
         localStorage.setItem('my-activity', JSON.stringify(activity));
         navigate('/workspace');
       }
     }
-
-    activity.lesson_module_name = learningStandard.name;
-    localStorage.setItem('my-activity', JSON.stringify(activity));
-    navigate('/workspace');
-
-    // placeholder functionality
-    window.open('https://www.google.com/search?q=' + selection + '+assignment', '_blank');
+    console.log("StudentCanvas", activities, index);
   };
 
 
@@ -438,8 +427,8 @@ export default function StudentCanvas({ activities, index }) {
           <div className='flex flex-column'>
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
-              lesson_title='Sample Lesson Title'
-              lesson_contents='Sample lesson content'
+              lesson_title={"Activity " + activities[index].number}
+              lesson_contents={activities[index].description}
             />
           </div>
           <div

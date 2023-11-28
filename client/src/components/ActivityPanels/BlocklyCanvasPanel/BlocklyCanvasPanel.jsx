@@ -4,21 +4,8 @@ import StudentCanvas from './canvas/StudentCanvas';
 import MentorCanvas from './canvas/MentorCanvas';
 import ContentCreatorCanvas from './canvas/ContentCreatorCanvas';
 import { useGlobalState } from '../../../Utils/userState';
-import { getStudentClassroom } from '../../../Utils/requests';
 
-// const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities}) => {
-const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities }) => {
-  console.log("hello bcp");
-  let index = 0;
-
-  if (activities && activities.length > 0) {
-    for (let i = 0; i < activities.length; i++) {
-      if (activities[i].id == activity.id) {
-        index = i;
-        break;
-      }
-    }
-  }
+const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities, learningStandard, index, setIndex }) => {
 
   const [value] = useGlobalState('currUser');
 
@@ -28,8 +15,12 @@ const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities }) =>
     case 'DefaultUser':
       return <PublicCanvas activity={activity} isSandbox={isSandbox} />;
     case 'Student':
-      return <StudentCanvas activities={activities} index={index} />;
-      // return <StudentCanvas activity={activity} />;
+      return <StudentCanvas 
+      activities={activities} 
+      index={index} 
+      setIndex={setIndex} 
+      learningStandard={learningStandard}
+      />;
     case 'Mentor':
       return <MentorCanvas
       activity={activity}
@@ -38,14 +29,12 @@ const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities }) =>
       isMentorActivity={!activity.selectedToolbox && !isSandbox}
       />;
     case 'ContentCreator':
-      return (
-        <ContentCreatorCanvas
-          activity={activity}
-          setActivity={setActivity}
-          isSandbox={isSandbox}
-          isMentorActivity={!activity.selectedToolbox && !isSandbox}
-        />
-      );
+      return <ContentCreatorCanvas
+      activity={activity}
+      setActivity={setActivity}
+      isSandbox={isSandbox}
+      isMentorActivity={!activity.selectedToolbox && !isSandbox}
+      />;
     default:
       return <div></div>;
   }
