@@ -21,7 +21,8 @@ import { Link } from 'react-router-dom';
 
 let plotId = 1;
 
-export default function StudentCanvas({ activity }) {
+export default function StudentCanvas({ activities, index, setIndex, learningStandard }) {
+
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -37,6 +38,7 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
+  const [activity, setActivity] = useState(activities[index]);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -209,6 +211,7 @@ export default function StudentCanvas({ activity }) {
         workspaceRef.current.clearUndo();
       }
     };
+    console.log("setting workspace on activity update");
     setUp();
   }, [activity]);
 
@@ -354,10 +357,10 @@ export default function StudentCanvas({ activity }) {
   const AssignmentButtons = () => {
     return (
         <div className='flex flex-row'>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('previous')}>
             <p>Previous</p>
           </div>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('next')}>
             <p>Next</p>
           </div>
           {/* Add more buttons for other assignments as needed */}
@@ -365,10 +368,31 @@ export default function StudentCanvas({ activity }) {
     );
   };
 
-  const handleSelection = (activity) => {
-    window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
+  // button selection handler
+  const handleActivitySelection = (selection) => {
+    if (selection === 'next') {
+      // set current activity to the next one if it exists
+      const nextIndex = index + 1;
+      if (nextIndex < activities.length) {
+        setIndex(nextIndex);
+        activities[nextIndex].lesson_module_name = learningStandard;
+        setActivity(activities[nextIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    } else if (selection === 'previous') { 
+      // set current activity to the previous one if it exists
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) {
+        setIndex(prevIndex);
+        activities[prevIndex].lesson_module_name = learningStandard;
+        setActivity(activities[prevIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    }
+    console.log("StudentCanvas", activities, index);
   };
-
 
 
   const assignmentButtonStyle = {
@@ -377,7 +401,7 @@ export default function StudentCanvas({ activity }) {
     border: 'none',
     padding: '10px 20px',
     margin: '5px',
-    borderRadius: '5px',
+    borderRadius: '80px',
     cursor: 'pointer',
     width: '40%',
     height: '70%',
@@ -403,8 +427,8 @@ export default function StudentCanvas({ activity }) {
           <div className='flex flex-column'>
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
-              lesson_title='Sample Lesson Title'
-              lesson_contents='Sample lesson content'
+              lesson_title={"Activity " + activities[index].number}
+              lesson_contents={activities[index].description}
             />
           </div>
           <div
