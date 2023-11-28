@@ -10,6 +10,8 @@ import {
 } from "../../../../Utils/requests"
 import "../../../ContentCreator/ActivityEditor/ActivityEditor.less"
 import ActivityComponentTags from "../../../ContentCreator/ActivityEditor/components/ActivityComponentTags"
+import StudentCanvas from "../../../../components/ActivityPanels/BlocklyCanvasPanel/canvas/StudentCanvas"
+import VideoModal from "../../../../components/ActivityPanels/BlocklyCanvasPanel/modals/VideoModal"
 
 const SCIENCE = 1
 const MAKING = 2
@@ -27,12 +29,14 @@ const MentorActivityDetailModal = ({
   const [StandardS, setStandardS] = useState("")
   const [images, setImages] = useState("")
   const [link, setLink] = useState("")
+  const [youtubeLink, setYoutubeLink] = useState("") //set youtube link state
   const [visible, setVisible] = useState(false);
   const [scienceComponents, setScienceComponents] = useState([])
   const [makingComponents, setMakingComponents] = useState([])
   const [computationComponents, setComputationComponents] = useState([])
   const [activityDetailsVisible, setActivityDetailsVisible] = useState(false)
   const [linkError, setLinkError] = useState(false)
+  const [youtubeLinkError, setYoutubeLinkError] = useState(false) //set state for Youtube Link Error
   const [submitButton, setSubmitButton] = useState(0)
   const navigate = useNavigate()
 
@@ -50,6 +54,8 @@ const MentorActivityDetailModal = ({
       setImages(response.data.images)
       setLink(response.data.link)
       setLinkError(false)
+      setYoutubeLink(response.data.youtubeLink)
+      setYoutubeLinkError(false)
       const science = response.data.learning_components
         .filter(component => component.learning_component_type === SCIENCE)
         .map(element => {
@@ -112,7 +118,16 @@ const MentorActivityDetailModal = ({
         return
       }
     }
+    if (youtubeLink) {
+      const goodYoutubeLink = checkURL(youtubeLink)
+      if (!goodYoutubeLink) {
+        setYoutubeLinkError(true)
+        message.error("Please Enter a valid Youtube Video URL", 4)
+        return
+      }
+    }
     setLinkError(false)
+    setYoutubeLinkError(false)
     const res = await updateActivityDetails(
       selectActivity.id,
       description,
@@ -122,7 +137,8 @@ const MentorActivityDetailModal = ({
       link,
       scienceComponents,
       makingComponents,
-      computationComponents
+      computationComponents,
+      youtubeLink
     )
     if (res.err) {
       message.error(res.err)
@@ -148,6 +164,20 @@ const MentorActivityDetailModal = ({
     setVisible(true)
     //setOpen(true)
 };
+
+  const openVideoModal = () => {
+    setShowVideoModal(true);
+  };
+
+  const closeVideoModal = () => {
+    setShowVideoModal(false);
+  };
+
+  const handleYoutubeLinkChange = (e) => {
+    setYoutubeLink(e.target.value);
+    setYoutubeLinkError(false);
+  };
+
   return (
     <div id="mentoredit">
     <Button id="view-activity-button"
@@ -261,6 +291,18 @@ const MentorActivityDetailModal = ({
             placeholder="Enter a link"
           ></Input>
         </Form.Item>
+        <Form.Item
+          id="form-label"
+          label="Youtube Video URL (Optional)"
+          >
+            <Input
+              onChange={handleYoutubeLinkChange}
+              className="input"
+              value={youtubeLink}
+              style={(youtubeLinkError ? { backgroundColor: "#FFCCCC" } : {})}
+              placeholder="Enter a Youtube video URL"
+              ></Input>
+          </Form.Item>
         <Form.Item
           id="form-label"
           wrapperCol={{
