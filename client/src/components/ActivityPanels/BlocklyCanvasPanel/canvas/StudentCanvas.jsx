@@ -516,8 +516,43 @@ export default function StudentCanvas({ activity }) {
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
               lesson_title= 'The Boggart'
-              lesson_contents='Sample lesson content dfslkjdflsjaglksj;gkahfjgsfjskdf
-              dfjskdfj'
+              lesson_contents={
+                <div>
+                  <p>Lesson: Basic Arduino Logic</p>
+                  <p><strong>Objective:</strong></p>
+                  <ul>
+                    <li>Understand and apply basic control structures in Arduino programming, including if-else statements and do-while loops.</li>
+                    <li>Learn how to use the Serial library for printing to the Serial Monitor.</li>
+                    <li>Practice incorporating delay() to control timing in Arduino programs.</li>
+                  </ul>
+                  <p><strong>Lesson Content:</strong></p>
+                  <ol>
+                    <li>
+                      <strong>Introduction:</strong>
+                      <ul>
+                        <li>
+                          <strong>1.1. If-Else Statements:</strong>
+                          <p>The if-else statement is used for decision-making in Arduino programming. It allows your program to execute different blocks of code based on a certain condition.</p>
+                        </li>
+                        <li>
+                          <strong>1.2. Do-While Loop:</strong>
+                          <p>The do-while loop is used when you want a block of code to execute at least once, and then repeat as long as a certain condition is true.</p>
+                        </li>
+                        <li>
+                          <strong>1.3. Serial Communication:</strong>
+                          <p>The Serial library allows communication between the Arduino and your computer through the Serial Monitor. We can use Serial.begin() to initialize communication and Serial.print() to send data.</p>
+                        </li>
+                        <li>
+                          <strong>1.4. Delay Function:</strong>
+                          <p>The delay() function is used to pause the execution of the program for a specified amount of time in milliseconds.</p>
+                        </li>
+                      </ul>
+                    </li>
+                  </ol>
+                  <p><strong>Conclusion:</strong></p>
+                  <p>In this lesson, you have learned the basics of if-else statements, do-while loops, serial communication, and the delay function in Arduino programming. Practice these concepts to gain a solid understanding and apply them to more complex projects.</p>
+                </div>
+              }
             />
           </div>
           <div
