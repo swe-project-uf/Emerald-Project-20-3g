@@ -8,6 +8,7 @@ import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
 import DisplayDiagramModal from '../modals/DisplayDiagramModal';
 import VersionHistoryModal from '../modals/VersionHistoryModal';
+import VideoModal from '../modals/VideoModal'; //Video Modal
 import {
   connectToPort,
   handleCloseConnection,
@@ -18,6 +19,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
 import { Link } from 'react-router-dom';
+import MentorActivityDetailModal from '../../../../views/Mentor/Classroom/Home/MentorActivityDetailModal';
 
 let plotId = 1;
 
@@ -37,6 +39,8 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
+  const [showVideoModal, setShowVideoModal] = useState(false); //Video Modal
+  const [youtubeLink, onYoutubeLinkChange] = useState("");
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -369,7 +373,20 @@ export default function StudentCanvas({ activity }) {
     window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
   };
 
+  // Function to open the video modal
+  const openVideoModal = () => {
+    setShowVideoModal(true);
+  };
 
+  // Function to close the video modal
+  const closeVideoModal = () => {
+    setShowVideoModal(false);
+  };
+
+  //const handleYoutubeLinkChange = (e) => {
+    //const value = e.target.value;
+    //onYoutubeLinkChange(value);
+  //}
 
   const assignmentButtonStyle = {
     color: '#FFFFFF',
@@ -463,6 +480,12 @@ export default function StudentCanvas({ activity }) {
                               <div className='popup ModalCompile4'>Save</div>
                             )}
                           </button>
+                          <button
+                            onClick={openVideoModal}
+                            style={{ position: 'absolute', top: '2px', right: '-165px' }}
+                            >
+                              Open Video
+                          </button>
                         </Col>
 
                         <Col className='flex flex-row' id='icon-align'>
@@ -529,6 +552,12 @@ export default function StudentCanvas({ activity }) {
                         )}
                       <DisplayDiagramModal
                         image={activity.images}
+                      />
+                      <VideoModal
+                        //onChange={handleYoutubeLinkChange}
+                        isOpen={showVideoModal}
+                        onClose={closeVideoModal}
+                        videoURL="cNr3r3nT8KE" // Replace with video url saved in MentorActivityDetailModal.jsx
                       />
                         <i
                           onClick={() => handleConsole()}
