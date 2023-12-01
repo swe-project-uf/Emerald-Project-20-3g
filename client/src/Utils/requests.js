@@ -376,7 +376,7 @@ export const createLessonModule = async (
   number,
   unit,
   standards,
-  link
+  link,
 ) =>
   makeRequest({
     method: POST,
@@ -451,7 +451,7 @@ export const updateLessonModule = async (
   name,
   expectations,
   standards,
-  link
+  link,
 ) =>
   makeRequest({
     method: PUT,
@@ -474,6 +474,7 @@ export const updateActivityDetails = async (
   StandardS,
   images,
   link,
+  splitPane,
   scienceComponents,
   makingComponents,
   computationComponents
@@ -488,6 +489,7 @@ export const updateActivityDetails = async (
       StandardS,
       images,
       link,
+      splitPane,
       scienceComponents,
       makingComponents,
       computationComponents,

@@ -10,6 +10,7 @@ import {
 } from "../../../../Utils/requests"
 import "../../../ContentCreator/ActivityEditor/ActivityEditor.less"
 import ActivityComponentTags from "../../../ContentCreator/ActivityEditor/components/ActivityComponentTags"
+import Switch from '@mui/material/Switch'
 
 const SCIENCE = 1
 const MAKING = 2
@@ -35,11 +36,12 @@ const MentorActivityDetailModal = ({
   const [linkError, setLinkError] = useState(false)
   const [submitButton, setSubmitButton] = useState(0)
   const navigate = useNavigate()
-  const [checked, setChecked] = useState(false); 
+  const [splitPane, setSplitPane] = useState(false); 
 
   useEffect(() => {
     const showActivityDetailsModal = async () => {
       const response = await getActivity(selectActivity.id)
+      console.log(response.data)
       if (response.err) {
         message.error(response.err)
         return
@@ -51,6 +53,7 @@ const MentorActivityDetailModal = ({
       setImages(response.data.images)
       setLink(response.data.link)
       setLinkError(false)
+      setSplitPane(response.data.splitPane)
       const science = response.data.learning_components
         .filter(component => component.learning_component_type === SCIENCE)
         .map(element => {
@@ -76,12 +79,14 @@ const MentorActivityDetailModal = ({
   }, [selectActivity])
 
   function handleSplitPaneChange(e) {
-    setChecked(e.target.checked);
+    setSplitPane(e.target.checked);
+    console.log(splitPane); //prints out the past state
   }
 
-  function updateSplitView({splitViewUpdate}){
+  /*function updateSplitView({splitViewUpdate}){
     splitViewUpdate(checked);
-  }
+    console.log(checked);
+  }*/
 
   const checkURL = n => {
     const regex =
@@ -129,6 +134,7 @@ const MentorActivityDetailModal = ({
       StandardS,
       images,
       link,
+      splitPane,
       scienceComponents,
       makingComponents,
       computationComponents
@@ -256,7 +262,7 @@ const MentorActivityDetailModal = ({
         </Form.Item>
         <h3 id="subtitle">Split pane view for student workspace</h3>
         <Form.Item id="form-label" label="Split pane view">
-          <input value="split-pane" type="checkbox" onChange={handleSplitPaneChange} />
+          <input value={splitPane} type="checkbox" onChange={handleSplitPaneChange} />
           <span> Enable split pane view </span>
         </Form.Item>
         <h3 id="subtitle">Additional Information</h3>

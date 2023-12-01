@@ -886,6 +886,10 @@
           },
           "activity_template": {
             "type": "string"
+          },
+          "splitPane": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -930,6 +934,10 @@
           },
           "activity_template": {
             "type": "string"
+          },
+          "splitPane": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"
