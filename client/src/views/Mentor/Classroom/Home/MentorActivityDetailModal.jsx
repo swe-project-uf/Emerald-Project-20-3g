@@ -262,7 +262,7 @@ const MentorActivityDetailModal = ({
         </Form.Item>
         <h3 id="subtitle">Split pane view for student workspace</h3>
         <Form.Item id="form-label" label="Split pane view">
-          <input value={splitPane} type="checkbox" onChange={handleSplitPaneChange} />
+          <input type="checkbox" checked={splitPane} onChange={handleSplitPaneChange} />
           <span> Enable split pane view </span>
         </Form.Item>
         <h3 id="subtitle">Additional Information</h3>
