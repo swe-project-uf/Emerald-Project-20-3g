@@ -1,15 +1,16 @@
 import React from 'react';
 
 const divStyle = {
-  width: '100%',
+  width: '200px',
   height: '100%',
   color: '#FFFFFF',
   backgroundColor: '#5BABDE',
   borderRadius: '10px',
   marginLeft: '2%',
   marginBottom: '2%',
-  padding: '10px'
-}
+  padding: '10px',
+  overflow: 'auto'
+};
 
 export default function Lesson({ lesson_title, lesson_contents }) {
 
