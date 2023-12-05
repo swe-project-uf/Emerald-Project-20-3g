@@ -457,7 +457,7 @@ export default function StudentCanvas({ activity }) {
                             flexDirection: 'column',
                           }}
                         >
-                          <div>
+                          <div style={{alignItems:'center'}} className='flex flex-column'>
                             <Col flex={'30px'}>
                               <button
                                 onClick={handleGoBack}
@@ -467,12 +467,12 @@ export default function StudentCanvas({ activity }) {
                                 <i id='icon-btn' className='fa fa-arrow-left' />
                               </button>
                             </Col>
-                            <Col flex='auto' />
+                            <Col flex='auto'/>
 
-                            <Col flex={'300px'}>
+                            <Col flex={'25px'}>
                               {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
                             </Col>
-                            <Col flex={'350px'}>
+                            <Col flex={'50px'} >
                               <Row>
                                 <Col className='flex flex-row' id='icon-align'>
                                   <VersionHistoryModal
@@ -499,7 +499,13 @@ export default function StudentCanvas({ activity }) {
                                     )}
                                   </button>
                                 </Col>
-
+                              </Row>
+                            </Col>
+                            <Col flex={'30px'}>
+                              <div
+                                id='action-btn-container'
+                                className='flex space-around'
+                              >
                                 <Col className='flex flex-row' id='icon-align'>
                                   <button
                                     onClick={handleUndo}
@@ -546,13 +552,6 @@ export default function StudentCanvas({ activity }) {
                                     )}
                                   </button>
                                 </Col>
-                              </Row>
-                            </Col>
-                            <Col flex={'180px'}>
-                              <div
-                                id='action-btn-container'
-                                className='flex space-around'
-                              >
                                 <ArduinoLogo
                                   setHoverCompile={setHoverCompile}
                                   handleCompile={handleCompile}
@@ -583,7 +582,6 @@ export default function StudentCanvas({ activity }) {
                                 </Dropdown>
                               </div>
                             </Col>
-
                           </div>
                         </div>
                       )}
