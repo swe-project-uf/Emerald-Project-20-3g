@@ -39,7 +39,7 @@ export default function StudentCanvas({ activity }) {
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
 
-  {/*new for menu collpase*/}
+  {/*new for menu collpase*/ }
   const [hoverMenu, setHoverMenu] = useState(false);
   const [showMenuIcons, setShowMenuIcons] = useState(false);
 
@@ -94,7 +94,7 @@ export default function StudentCanvas({ activity }) {
     let blockType = '';
     if (blockId !== '') {
       let type = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
-      type ? blockType = type : blockType = ''; 
+      type ? blockType = type : blockType = '';
     }
 
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
@@ -135,7 +135,7 @@ export default function StudentCanvas({ activity }) {
       event.element === 'field' &&
       replayRef.current.length > 1 &&
       replayRef.current[replayRef.current.length - 1].action ===
-        'change field' &&
+      'change field' &&
       replayRef.current[replayRef.current.length - 1].blockId === event.blockId
     ) {
       replayRef.current.pop();
@@ -341,7 +341,7 @@ export default function StudentCanvas({ activity }) {
 
 
 
-  {/*new code for menu collapse*/}
+  {/*new code for menu collapse*/ }
   const handleMenuCollapse = async () => {
     setShowMenuIcons(prevState => !prevState);
   };
@@ -367,15 +367,15 @@ export default function StudentCanvas({ activity }) {
 
   const AssignmentButtons = () => {
     return (
-        <div className='flex flex-row'>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
-            <p>Previous</p>
-          </div>
-          <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
-            <p>Next</p>
-          </div>
-          {/* Add more buttons for other assignments as needed */}
+      <div className='flex flex-row'>
+        <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
+          <p>Previous</p>
         </div>
+        <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
+          <p>Next</p>
+        </div>
+        {/* Add more buttons for other assignments as needed */}
+      </div>
     );
   };
 
@@ -401,8 +401,8 @@ export default function StudentCanvas({ activity }) {
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
-          <style>
-            {`
+      <style>
+        {`
               .assignment-button:hover {
                 background-color: #0056b3;
               }
@@ -411,38 +411,54 @@ export default function StudentCanvas({ activity }) {
                 outline: none;
               }
             `}
-          </style>
-          <div className='flex flex-column'>
-            <div className='flex flex-row'>
-              <div className='flex flex-column'>
-                <AssignmentButtons /> {/*  buttons */}
-                <Lesson
-                  lesson_title='Sample Lesson Title'
-                  lesson_contents='Sample lesson content'
-                />
-              </div>
-              <div
-                id='bottom-container'
-                className='flex flex-column vertical-container overflow-visible'
-              >
-                <Spin
-                  tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
-                  className='compilePop'
-                  size='large'
-                  spinning={selectedCompile}
-                >
-                  <Row id='icon-control-panel'>
-                    <Col flex='none' id='section-header'>
-                      {activity.lesson_module_name}
-                    </Col>
-                    <Col flex='auto'>
-                      <Row align='middle' justify='end' id='description-container'>
+      </style>
 
-                        {/* make changes here */}
-                        <div>
-                          {showMenuIcons && (
-                            <div>
-                              <Col flex={'30px'}>
+
+      <div className='flex flex-column'>
+        <div className='flex flex-row'>
+          <div className='flex flex-column'>
+            <AssignmentButtons /> {/*  buttons */}
+            <Lesson
+              lesson_title='Sample Lesson Title'
+              lesson_contents='Sample lesson content'
+            />
+          </div>
+          <div
+            id='bottom-container'
+            className='flex flex-column vertical-container overflow-visible'
+          >
+            <Spin
+              tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+              className='compilePop'
+              size='large'
+              spinning={selectedCompile}
+            >
+              <Row id='icon-control-panel'>
+                <Col flex='none' id='section-header'>
+                  {activity.lesson_module_name}
+                </Col>
+                <Col flex='auto'>
+                  <Row align='middle' justify='end' id='description-container'>
+
+                    {/* show or dont show */}
+                    <div>
+                      {showMenuIcons && (
+                        <div
+                          className="menu"
+                          style={{
+                            position: 'absolute',
+                            zIndex: 100,
+                            top: '100%',
+                            right: 0,
+                            backgroundColor: 'white',
+                            border: '1px solid #3D5C82',
+                            padding: '5px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}
+                        >
+                          <div>
+                            <Col flex={'30px'}>
                               <button
                                 onClick={handleGoBack}
                                 id='link'
@@ -452,7 +468,7 @@ export default function StudentCanvas({ activity }) {
                               </button>
                             </Col>
                             <Col flex='auto' />
-    
+
                             <Col flex={'300px'}>
                               {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
                             </Col>
@@ -483,7 +499,7 @@ export default function StudentCanvas({ activity }) {
                                     )}
                                   </button>
                                 </Col>
-    
+
                                 <Col className='flex flex-row' id='icon-align'>
                                   <button
                                     onClick={handleUndo}
@@ -547,9 +563,9 @@ export default function StudentCanvas({ activity }) {
                                     Upload to Arduino
                                   </div>
                                 )}
-                              <DisplayDiagramModal
-                                image={activity.images}
-                              />
+                                <DisplayDiagramModal
+                                  image={activity.images}
+                                />
                                 <i
                                   onClick={() => handleConsole()}
                                   className='fas fa-terminal hvr-info'
@@ -567,117 +583,83 @@ export default function StudentCanvas({ activity }) {
                                 </Dropdown>
                               </div>
                             </Col>
-                            {/* new code for three line dropdown component follows Here
-                            
-                            <Col flex={'30px'}>
-                                <ThreeLines
-                                  setHoverMenu={setHoverMenu}
-                                  handleMenuCollapse={handleMenuCollapse}
-                                />
-                                {hoverMenu && (
-                                  <div className='popup Menu Lines'>
-                                    {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
-                                  </div>
-                                )}
-                            </Col>
-                            
-                            */}
-                            </div>
-                          )}
 
-                          <Col flex={'30px'}>
-                          <ThreeLines
-                            setHoverMenu={setHoverMenu}
-                            handleMenuCollapse={handleMenuCollapse}
-                          />
-                          {hoverMenu && (
-                            <div className='popup Menu Lines'>
-                              {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
-                            </div>
-                          )}
-                          </Col>
+                          </div>
                         </div>
-                        
-                        
-                        
-                      </Row>
-                    </Col>
+                      )}
+
+                      <Col flex={'30px'}>
+                        <ThreeLines
+                          setHoverMenu={setHoverMenu}
+                          handleMenuCollapse={handleMenuCollapse}
+                        />
+                        {hoverMenu && (
+                          <div className='popup Menu Lines' style={showMenuIcons ? { right: 280} : { right: 0 }}>
+                            {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
+                          </div>
+                        )}
+                      </Col>
+
+                    </div>
+
+
                   </Row>
-                  <div id='blockly-canvas' />
-                </Spin>
-              </div>
-              </div>
+                </Col>
+              </Row>
+              <div id='blockly-canvas' />
+            </Spin>
+          </div>
+        </div>
 
-              <ConsoleModal
-                show={showConsole}
-                connectionOpen={connectionOpen}
-                setConnectionOpen={setConnectionOpen}
-              ></ConsoleModal>
-              <PlotterModal
-                show={showPlotter}
-                connectionOpen={connectionOpen}
-                setConnectionOpen={setConnectionOpen}
-                plotData={plotData}
-                setPlotData={setPlotData}
-                plotId={plotId}
-              />          
-            </div>
+        <ConsoleModal
+          show={showConsole}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+        ></ConsoleModal>
+        <PlotterModal
+          show={showPlotter}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+          plotData={plotData}
+          setPlotData={setPlotData}
+          plotId={plotId}
+        />
+      </div>
 
-          {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-          <xml id='toolbox' is='Blockly workspace'>
-            {
-              // Maps out block categories
-              activity &&
-                activity.toolbox &&
-                activity.toolbox.map(([category, blocks]) => (
-                  <category name={category} is='Blockly category' key={category}>
-                    {
-                      // maps out blocks in category
-                      // eslint-disable-next-line
-                      blocks.map((block) => {
-                        return (
-                          <block
-                            type={block.name}
-                            is='Blockly block'
-                            key={block.name}
-                          />
-                        );
-                      })
-                    }
-                  </category>
-                ))
-            }
-          </xml>
+      {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
+      <xml id='toolbox' is='Blockly workspace'>
+        {
+          // Maps out block categories
+          activity &&
+          activity.toolbox &&
+          activity.toolbox.map(([category, blocks]) => (
+            <category name={category} is='Blockly category' key={category}>
+              {
+                // maps out blocks in category
+                // eslint-disable-next-line
+                blocks.map((block) => {
+                  return (
+                    <block
+                      type={block.name}
+                      is='Blockly block'
+                      key={block.name}
+                    />
+                  );
+                })
+              }
+            </category>
+          ))
+        }
+      </xml>
 
-          {compileError && (
-            <Alert
-              message={compileError}
-              type='error'
-              closable
-              onClose={(e) => setCompileError('')}
-            ></Alert>
-          )}
+      {compileError && (
+        <Alert
+          message={compileError}
+          type='error'
+          closable
+          onClose={(e) => setCompileError('')}
+        ></Alert>
+      )}
     </div>
   );
 }
-
-{/*
-  <div>
-      {showMenuIcons && (
-
-      )}
-
-      <Col flex={'30px'}>
-      <ThreeLines
-        setHoverMenu={setHoverMenu}
-        handleMenuCollapse={handleMenuCollapse}
-      />
-      {hoverMenu && (
-        <div className='popup Menu Lines'>
-          {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
-        </div>
-      )}
-      </Col>
-    </div>
-
-*/}
