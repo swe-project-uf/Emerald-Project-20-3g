@@ -592,7 +592,7 @@ export default function StudentCanvas({ activity }) {
                           handleMenuCollapse={handleMenuCollapse}
                         />
                         {hoverMenu && (
-                          <div className='popup Menu Lines' style={showMenuIcons ? { right: 280} : { right: 0 }}>
+                          <div className='popup Menu Lines' style={showMenuIcons ? { right: 265} : { right: 0 }}>
                             {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
                           </div>
                         )}
