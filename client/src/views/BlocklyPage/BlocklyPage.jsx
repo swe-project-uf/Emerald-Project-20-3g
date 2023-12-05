@@ -9,14 +9,44 @@ import {
   getActivityToolboxAll,
 } from "../../Utils/requests"
 import { useGlobalState } from "../../Utils/userState"
+import { getStudentClassroom } from "../../Utils/requests"
 
 export default function BlocklyPage({ isSandbox }) {
   const [value] = useGlobalState("currUser")
   const [activity, setActivity] = useState({})
-  const navigate = useNavigate()
+  const [activities, setActivities] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+  const [learningStandard, setLearningStandard] = useState({});
+  const [index, setIndex] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getStudentClassroom();
+        if (res.data) {
+          if (res.data.lesson_module && res.data.lesson_module.activities) {
+            const fetchedActivities = res.data.lesson_module.activities || [];
+            setActivities(fetchedActivities);
+            setLearningStandard(res.data.lesson_module.name);
+
+            const currentIndex = fetchedActivities.findIndex(a => a.number === activity.number);
+            setIndex(currentIndex >= 0 ? currentIndex : 0);
+          }
+        } else {
+          message.error(res.err);
+        }
+      } catch (error) {
+        console.error("Error in getActivities: ", error);
+        setActivities([]);
+      }
+    };
+
+
     const setup = async () => {
+      await fetchData();
+      setIsReady(true);
+
       // if we are in sandbox mode show all toolbox
       const sandboxActivity = JSON.parse(localStorage.getItem("sandbox-activity"))
       if (isSandbox) {
@@ -67,16 +97,26 @@ export default function BlocklyPage({ isSandbox }) {
           navigate(-1)
         }
       }
-    }
+    };
 
-    setup()
-  }, [isSandbox, navigate, value.role])
+    setup();
+  }, [isSandbox, navigate, value.role]);
 
   return (
     <div className="container nav-padding">
       <NavBar />
       <div className="flex flex-row">
-        <BlocklyCanvasPanel activity={activity} setActivity={setActivity} isSandbox={isSandbox} />
+        {isReady && (
+          <BlocklyCanvasPanel 
+            activity={activity}
+            setActivity={setActivity} 
+            isSandbox={isSandbox} 
+            activities={activities} 
+            learningStandard={learningStandard}
+            index={index}
+            setIndex={setIndex}
+          />
+        )}
       </div>
     </div>
   )

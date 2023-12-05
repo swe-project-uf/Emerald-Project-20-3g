@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../ActivityLevels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
-import { getSaves } from '../../../../Utils/requests';
+import {getActivityToolbox, getSaves} from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -22,7 +22,8 @@ import ThreeLines from '../Icons/ThreeLines';
 
 let plotId = 1;
 
-export default function StudentCanvas({ activity }) {
+export default function StudentCanvas({ activities, index, setIndex, learningStandard }) {
+
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -38,6 +39,7 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
+  const [activity, setActivity] = useState(activities[index]);
 
   {/*new for menu collpase*/ }
   const [hoverMenu, setHoverMenu] = useState(false);
@@ -52,6 +54,10 @@ export default function StudentCanvas({ activity }) {
   const clicks = useRef(0);
 
   const setWorkspace = () => {
+    if (workspaceRef.current) {
+      workspaceRef.current.dispose();
+    }
+
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
@@ -113,8 +119,8 @@ export default function StudentCanvas({ activity }) {
   const blocklyEvent = (event) => {
     // if it is a click event, add click
     if (
-      (event.type === 'ui' && event.element === 'click') ||
-      event.element === 'selected'
+        (event.type === 'ui' && event.element === 'click') ||
+        event.element === 'selected'
     ) {
       clicks.current++;
     }
@@ -167,9 +173,9 @@ export default function StudentCanvas({ activity }) {
     let autosaveInterval = setInterval(async () => {
       if (workspaceRef.current && activityRef.current) {
         const res = await handleSave(
-          activityRef.current.id,
-          workspaceRef,
-          replayRef.current
+            activityRef.current.id,
+            workspaceRef,
+            replayRef.current
         );
         if (res.data) {
           setLastAutoSave(res.data[0]);
@@ -184,15 +190,20 @@ export default function StudentCanvas({ activity }) {
     };
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // WORKED WITH TA
     // once the activity state is set, set the workspace and save
     const setUp = async () => {
+      console.log("TEST");
+    //  console.log(!workspaceRef.current);
+      console.log(activity);
+      console.log(Object.keys(activity).length !== 0);
       activityRef.current = activity;
-      if (!workspaceRef.current && activity && Object.keys(activity).length !== 0) {
+      if (activity && Object.keys(activity).length !== 0) {
         setWorkspace();
 
         let onLoadSave = null;
         const res = await getSaves(activity.id);
+        console.log("id:" + activity.id);
         if (res.data) {
           if (res.data.current) onLoadSave = res.data.current;
           setSaves(res.data);
@@ -214,8 +225,9 @@ export default function StudentCanvas({ activity }) {
         workspaceRef.current.clearUndo();
       }
     };
+    console.log("setting workspace on activity update");
     setUp();
-  }, [activity]);
+  }, [activity, index]);
 
   const handleManualSave = async () => {
     // save workspace then update load save options
@@ -282,12 +294,12 @@ export default function StudentCanvas({ activity }) {
 
     if (!showPlotter) {
       await handleOpenConnection(
-        9600,
-        'plot',
-        plotData,
-        setPlotData,
-        plotId,
-        forceUpdate
+          9600,
+          'plot',
+          plotData,
+          setPlotData,
+          plotId,
+          forceUpdate
       );
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
@@ -308,7 +320,7 @@ export default function StudentCanvas({ activity }) {
   const handleCompile = async () => {
     if (showConsole || showPlotter) {
       message.warning(
-        'Close Serial Monitor and Serial Plotter before uploading your code'
+          'Close Serial Monitor and Serial Plotter before uploading your code'
       );
     } else {
       if (typeof window['port'] === 'undefined') {
@@ -320,11 +332,11 @@ export default function StudentCanvas({ activity }) {
       }
       setCompileError('');
       await compileArduinoCode(
-        workspaceRef.current,
-        setSelectedCompile,
-        setCompileError,
-        activity,
-        true
+          workspaceRef.current,
+          setSelectedCompile,
+          setCompileError,
+          activity,
+          true
       );
       pushEvent('compile');
     }
@@ -332,9 +344,9 @@ export default function StudentCanvas({ activity }) {
 
   const handleGoBack = () => {
     if (
-      window.confirm(
-        'All unsaved progress will be lost. Do you still want to go back?'
-      )
+        window.confirm(
+            'All unsaved progress will be lost. Do you still want to go back?'
+        )
     )
       navigate(-1);
   };
@@ -354,35 +366,56 @@ export default function StudentCanvas({ activity }) {
   };
 
   const menu = (
-    <Menu>
-      <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo />
-        &nbsp; Show Serial Plotter
-      </Menu.Item>
-      <Menu.Item>
-        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
-      </Menu.Item>
-    </Menu>
+      <Menu>
+        <Menu.Item onClick={handlePlotter}>
+          <PlotterLogo />
+          &nbsp; Show Serial Plotter
+        </Menu.Item>
+        <Menu.Item>
+          <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
+        </Menu.Item>
+      </Menu>
   );
 
   const AssignmentButtons = () => {
     return (
-      <div className='flex flex-row'>
-        <div style={assignmentButtonStyle} onClick={() => handleSelection('previous')}>
-          <p>Previous</p>
-        </div>
-        <div style={assignmentButtonStyle} onClick={() => handleSelection('next')}>
-          <p>Next</p>
-        </div>
+        <div className='flex flex-row'>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('previous')}>
+            <p>Previous</p>
+          </div>
+          <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('next')}>
+            <p>Next</p>
+          </div>
         {/* Add more buttons for other assignments as needed */}
       </div>
     );
   };
 
-  const handleSelection = (activity) => {
-    window.open('https://www.google.com/search?q=' + activity + '+assignment', '_blank');
+  // button selection handler
+  const handleActivitySelection = (selection) => {
+    if (selection === 'next') {
+      // set current activity to the next one if it exists
+      const nextIndex = index + 1;
+      if (nextIndex < activities.length) {
+        setIndex(nextIndex);
+        activities[nextIndex].lesson_module_name = learningStandard;
+        setActivity(activities[nextIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    } else if (selection === 'previous') { 
+      // set current activity to the previous one if it exists
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) {
+        setIndex(prevIndex);
+        activities[prevIndex].lesson_module_name = learningStandard;
+        setActivity(activities[prevIndex]);
+        localStorage.setItem('my-activity', JSON.stringify(activity));
+        navigate('/workspace');
+      }
+    }
+    console.log("StudentCanvas", activities, index);
   };
-
 
 
   const assignmentButtonStyle = {
@@ -391,7 +424,7 @@ export default function StudentCanvas({ activity }) {
     border: 'none',
     padding: '10px 20px',
     margin: '5px',
-    borderRadius: '5px',
+    borderRadius: '80px',
     cursor: 'pointer',
     width: '40%',
     height: '70%',
@@ -406,7 +439,6 @@ export default function StudentCanvas({ activity }) {
               .assignment-button:hover {
                 background-color: #0056b3;
               }
-
               .assignment-button:focus {
                 outline: none;
               }
@@ -419,8 +451,8 @@ export default function StudentCanvas({ activity }) {
           <div className='flex flex-column'>
             <AssignmentButtons /> {/*  buttons */}
             <Lesson
-              lesson_title='Sample Lesson Title'
-              lesson_contents='Sample lesson content'
+              lesson_title={"Activity " + activities[index].number}
+              lesson_contents={activities[index].description}
             />
           </div>
           <div
@@ -650,14 +682,14 @@ export default function StudentCanvas({ activity }) {
         }
       </xml>
 
-      {compileError && (
-        <Alert
-          message={compileError}
-          type='error'
-          closable
-          onClose={(e) => setCompileError('')}
-        ></Alert>
-      )}
-    </div>
+        {compileError && (
+            <Alert
+                message={compileError}
+                type='error'
+                closable
+                onClose={(e) => setCompileError('')}
+            ></Alert>
+        )}
+      </div>
   );
 }

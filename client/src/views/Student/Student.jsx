@@ -29,7 +29,7 @@ function Student() {
     activity.lesson_module_name = learningStandard.name;
     localStorage.setItem('my-activity', JSON.stringify(activity));
 
-    navigate('/workspace');
+    navigate(`/workspace`);
   };
 
   return (
