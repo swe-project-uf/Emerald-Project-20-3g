@@ -31,7 +31,7 @@ export default function BlocklyPage({ isSandbox }) {
             setLearningStandard(res.data.lesson_module.name);
 
             const currentIndex = fetchedActivities.findIndex(a => a.number === activity.number);
-            setIndex(currentIndex >= 0 ? currentIndex :0);
+            setIndex(currentIndex >= 0 ? currentIndex : 0);
           }
         } else {
           message.error(res.err);
@@ -103,21 +103,21 @@ export default function BlocklyPage({ isSandbox }) {
   }, [isSandbox, navigate, value.role]);
 
   return (
-      <div className="container nav-padding">
-        <NavBar />
-        <div className="flex flex-row">
-          {isReady && (
-              <BlocklyCanvasPanel
-                  activity={activity}
-                  setActivity={setActivity}
-                  isSandbox={isSandbox}
-                  activities={activities}
-                  learningStandard={learningStandard}
-                  index={index}
-                  setIndex={setIndex}
-              />
-          )}
-        </div>
+    <div className="container nav-padding">
+      <NavBar />
+      <div className="flex flex-row">
+        {isReady && (
+          <BlocklyCanvasPanel 
+            activity={activity}
+            setActivity={setActivity} 
+            isSandbox={isSandbox} 
+            activities={activities} 
+            learningStandard={learningStandard}
+            index={index}
+            setIndex={setIndex}
+          />
+        )}
       </div>
+    </div>
   )
 }

@@ -389,7 +389,7 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
         localStorage.setItem('my-activity', JSON.stringify(activity));
         navigate('/workspace');
       }
-    } else if (selection === 'previous') {
+    } else if (selection === 'previous') { 
       // set current activity to the previous one if it exists
       const prevIndex = index - 1;
       if (prevIndex >= 0) {
@@ -401,8 +401,6 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
       }
     }
     console.log("StudentCanvas", activities, index);
-    console.log("act")
-    const toolBoxArray = getActivityToolbox(activity.id);
   };
 
 
@@ -432,19 +430,25 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
             outline: none;
           }
         `}
-        </style>
-        <div className='flex flex-column'>
-          <div className='flex flex-row'>
-            <div className='flex flex-column'>
-              <AssignmentButtons /> {/*  buttons */}
-              <Lesson
-                  lesson_title={"Activity " + activities[index].number}
-                  lesson_contents={activities[index].description}
-              />
-            </div>
-            <div
-                id='bottom-container'
-                className='flex flex-column vertical-container overflow-visible'
+      </style>
+      <div className='flex flex-column'>
+        <div className='flex flex-row'>
+          <div className='flex flex-column'>
+            <AssignmentButtons /> {/*  buttons */}
+            <Lesson
+              lesson_title={"Activity " + activities[index].number}
+              lesson_contents={activities[index].description}
+            />
+          </div>
+          <div
+            id='bottom-container'
+            className='flex flex-column vertical-container overflow-visible'
+          >
+            <Spin
+              tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+              className='compilePop'
+              size='large'
+              spinning={selectedCompile}
             >
               <Spin
                   tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
@@ -586,6 +590,7 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
                   </Col>
                 </Row>
                 <div id='blockly-canvas' />
+              </Spin>
               </Spin>
             </div>
           </div>

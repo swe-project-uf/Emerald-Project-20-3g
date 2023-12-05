@@ -31,12 +31,12 @@ export default function Workspace({ handleLogout }) {
       const activitiesData = await getActivities();
       setActivities(activitiesData);
     }
-
+    
     fetchData();
   }, []);
 
   const localActivity = JSON.parse(localStorage.getItem('my-activity'));
-
+  
   if (localActivity) {
     if (localActivity.toolbox) {
       setActivity(localActivity);
@@ -61,16 +61,16 @@ export default function Workspace({ handleLogout }) {
   };
 
   return (
-      <div className='container flex flex-row nav-padding'>
-        <NavBar isStudent={true} />
-        <BlocklyCanvasPanel
-            activity={activity}
-            lessonName={`${activity.lesson_module_name}, Activity ${activity.number}`}
-            handleGoBack={handleGoBack}
-            handleLogout={handleLogout}
-            isStudent={true}
-            activities={activities}
-        />
-      </div>
+    <div className='container flex flex-row nav-padding'>
+      <NavBar isStudent={true} />
+      <BlocklyCanvasPanel
+        activity={activity}
+        lessonName={`${activity.lesson_module_name}, Activity ${activity.number}`}
+        handleGoBack={handleGoBack}
+        handleLogout={handleLogout}
+        isStudent={true}
+        activities={activities}
+      />
+    </div>
   );
 }

@@ -15,25 +15,25 @@ const BlocklyCanvasPanel = ({ activity, isSandbox, setActivity, activities, lear
     case 'DefaultUser':
       return <PublicCanvas activity={activity} isSandbox={isSandbox} />;
     case 'Student':
-      return <StudentCanvas
-          activities={activities}
-          index={index}
-          setIndex={setIndex}
-          learningStandard={learningStandard}
+      return <StudentCanvas 
+      activities={activities} 
+      index={index} 
+      setIndex={setIndex} 
+      learningStandard={learningStandard}
       />;
     case 'Mentor':
       return <MentorCanvas
-          activity={activity}
-          setActivity={setActivity}
-          isSandbox={isSandbox}
-          isMentorActivity={!activity.selectedToolbox && !isSandbox}
+      activity={activity}
+      setActivity={setActivity}
+      isSandbox={isSandbox}
+      isMentorActivity={!activity.selectedToolbox && !isSandbox}
       />;
     case 'ContentCreator':
       return <ContentCreatorCanvas
-          activity={activity}
-          setActivity={setActivity}
-          isSandbox={isSandbox}
-          isMentorActivity={!activity.selectedToolbox && !isSandbox}
+      activity={activity}
+      setActivity={setActivity}
+      isSandbox={isSandbox}
+      isMentorActivity={!activity.selectedToolbox && !isSandbox}
       />;
     default:
       return <div></div>;
