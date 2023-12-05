@@ -18,6 +18,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 import Lesson from '../../../Lesson/Lesson';
 import { Link } from 'react-router-dom';
+import ThreeLines from '../Icons/ThreeLines';
 
 let plotId = 1;
 
@@ -39,6 +40,10 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
   const [activity, setActivity] = useState(activities[index]);
+
+  {/*new for menu collpase*/ }
+  const [hoverMenu, setHoverMenu] = useState(false);
+  const [showMenuIcons, setShowMenuIcons] = useState(false);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -132,12 +137,12 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
 
     // if the event is change field value, only accept the latest change
     if (
-        event.type === 'change' &&
-        event.element === 'field' &&
-        replayRef.current.length > 1 &&
-        replayRef.current[replayRef.current.length - 1].action ===
-        'change field' &&
-        replayRef.current[replayRef.current.length - 1].blockId === event.blockId
+      event.type === 'change' &&
+      event.element === 'field' &&
+      replayRef.current.length > 1 &&
+      replayRef.current[replayRef.current.length - 1].action ===
+      'change field' &&
+      replayRef.current[replayRef.current.length - 1].blockId === event.blockId
     ) {
       replayRef.current.pop();
     }
@@ -346,6 +351,15 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
       navigate(-1);
   };
 
+
+
+  {/*new code for menu collapse*/ }
+  const handleMenuCollapse = async () => {
+    setShowMenuIcons(prevState => !prevState);
+  };
+
+
+
   const getFormattedDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
     return output + ' ' + new Date(value).toLocaleTimeString(locale);
@@ -372,8 +386,8 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
           <div style={assignmentButtonStyle} onClick={() => handleActivitySelection('next')}>
             <p>Next</p>
           </div>
-          {/* Add more buttons for other assignments as needed */}
-        </div>
+        {/* Add more buttons for other assignments as needed */}
+      </div>
     );
   };
 
@@ -419,18 +433,19 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
   }
 
   return (
-      <div id='horizontal-container' className='flex flex-column'>
-        <style>
-          {`
-          .assignment-button:hover {
-            background-color: #0056b3;
-          }
-
-          .assignment-button:focus {
-            outline: none;
-          }
-        `}
+    <div id='horizontal-container' className='flex flex-column'>
+      <style>
+        {`
+              .assignment-button:hover {
+                background-color: #0056b3;
+              }
+              .assignment-button:focus {
+                outline: none;
+              }
+            `}
       </style>
+
+
       <div className='flex flex-column'>
         <div className='flex flex-row'>
           <div className='flex flex-column'>
@@ -450,192 +465,222 @@ export default function StudentCanvas({ activities, index, setIndex, learningSta
               size='large'
               spinning={selectedCompile}
             >
-              <Spin
-                  tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
-                  className='compilePop'
-                  size='large'
-                  spinning={selectedCompile}
-              >
-                <Row id='icon-control-panel'>
-                  <Col flex='none' id='section-header'>
-                    {activity.lesson_module_name}
-                  </Col>
-                  <Col flex='auto'>
-                    <Row align='middle' justify='end' id='description-container'>
-                      <Col flex={'30px'}>
-                        <button
-                            onClick={handleGoBack}
-                            id='link'
-                            className='flex flex-column'
-                        >
-                          <i id='icon-btn' className='fa fa-arrow-left' />
-                        </button>
-                      </Col>
-                      <Col flex='auto' />
+              <Row id='icon-control-panel'>
+                <Col flex='none' id='section-header'>
+                  {activity.lesson_module_name}
+                </Col>
+                <Col flex='auto'>
+                  <Row align='middle' justify='end' id='description-container'>
 
-                      <Col flex={'300px'}>
-                        {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
-                      </Col>
-                      <Col flex={'350px'}>
-                        <Row>
-                          <Col className='flex flex-row' id='icon-align'>
-                            <VersionHistoryModal
-                                saves={saves}
-                                lastAutoSave={lastAutoSave}
-                                defaultTemplate={activity}
-                                getFormattedDate={getFormattedDate}
-                                loadSave={loadSave}
-                                pushEvent={pushEvent}
-                            />
-                            <button
-                                onClick={handleManualSave}
-                                id='link'
-                                className='flex flex-column'
-                            >
-                              <i
-                                  id='icon-btn'
-                                  className='fa fa-save'
-                                  onMouseEnter={() => setHoverSave(true)}
-                                  onMouseLeave={() => setHoverSave(false)}
-                              />
-                              {hoverSave && (
-                                  <div className='popup ModalCompile4'>Save</div>
-                              )}
-                            </button>
-                          </Col>
-
-                          <Col className='flex flex-row' id='icon-align'>
-                            <button
-                                onClick={handleUndo}
-                                id='link'
-                                className='flex flex-column'
-                            >
-                              <i
-                                  id='icon-btn'
-                                  className='fa fa-undo-alt'
-                                  style={
-                                    workspaceRef.current
-                                        ? workspaceRef.current.undoStack_.length < 1
-                                            ? { color: 'grey', cursor: 'default' }
-                                            : null
-                                        : null
-                                  }
-                                  onMouseEnter={() => setHoverUndo(true)}
-                                  onMouseLeave={() => setHoverUndo(false)}
-                              />
-                              {hoverUndo && (
-                                  <div className='popup ModalCompile4'>Undo</div>
-                              )}
-                            </button>
-                            <button
-                                onClick={handleRedo}
-                                id='link'
-                                className='flex flex-column'
-                            >
-                              <i
-                                  id='icon-btn'
-                                  className='fa fa-redo-alt'
-                                  style={
-                                    workspaceRef.current
-                                        ? workspaceRef.current.redoStack_.length < 1
-                                            ? { color: 'grey', cursor: 'default' }
-                                            : null
-                                        : null
-                                  }
-                                  onMouseEnter={() => setHoverRedo(true)}
-                                  onMouseLeave={() => setHoverRedo(false)}
-                              />
-                              {hoverRedo && (
-                                  <div className='popup ModalCompile4'>Redo</div>
-                              )}
-                            </button>
-                          </Col>
-                        </Row>
-                      </Col>
-                      <Col flex={'180px'}>
+                    {/* show or dont show */}
+                    <div>
+                      {showMenuIcons && (
                         <div
-                            id='action-btn-container'
-                            className='flex space-around'
+                          className="menu"
+                          style={{
+                            position: 'absolute',
+                            zIndex: 100,
+                            top: '100%',
+                            right: 0,
+                            backgroundColor: 'white',
+                            border: '1px solid #3D5C82',
+                            padding: '5px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}
                         >
-                          <ArduinoLogo
-                              setHoverCompile={setHoverCompile}
-                              handleCompile={handleCompile}
-                          />
-                          {hoverCompile && (
-                              <div className='popup ModalCompile'>
-                                Upload to Arduino
-                              </div>
-                          )}
-                          <DisplayDiagramModal
-                              image={activity.images}
-                          />
-                          <i
-                              onClick={() => handleConsole()}
-                              className='fas fa-terminal hvr-info'
-                              style={{ marginLeft: '6px' }}
-                              onMouseEnter={() => setHoverConsole(true)}
-                              onMouseLeave={() => setHoverConsole(false)}
-                          />
-                          {hoverConsole && (
-                              <div className='popup ModalCompile'>
-                                Show Serial Monitor
-                              </div>
-                          )}
-                          <Dropdown overlay={menu}>
-                            <i className='fas fa-ellipsis-v'></i>
-                          </Dropdown>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <div id='blockly-canvas' />
-              </Spin>
-              </Spin>
-            </div>
-          </div>
+                          <div style={{alignItems:'center'}} className='flex flex-column'>
+                            <Col flex={'30px'}>
+                              <button
+                                onClick={handleGoBack}
+                                id='link'
+                                className='flex flex-column'
+                              >
+                                <i id='icon-btn' className='fa fa-arrow-left' />
+                              </button>
+                            </Col>
+                            <Col flex='auto'/>
 
-          <ConsoleModal
-              show={showConsole}
-              connectionOpen={connectionOpen}
-              setConnectionOpen={setConnectionOpen}
-          ></ConsoleModal>
-          <PlotterModal
-              show={showPlotter}
-              connectionOpen={connectionOpen}
-              setConnectionOpen={setConnectionOpen}
-              plotData={plotData}
-              setPlotData={setPlotData}
-              plotId={plotId}
-          />
+                            <Col flex={'25px'}>
+                              {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
+                            </Col>
+                            <Col flex={'50px'} >
+                              <Row>
+                                <Col className='flex flex-row' id='icon-align'>
+                                  <VersionHistoryModal
+                                    saves={saves}
+                                    lastAutoSave={lastAutoSave}
+                                    defaultTemplate={activity}
+                                    getFormattedDate={getFormattedDate}
+                                    loadSave={loadSave}
+                                    pushEvent={pushEvent}
+                                  />
+                                  <button
+                                    onClick={handleManualSave}
+                                    id='link'
+                                    className='flex flex-column'
+                                  >
+                                    <i
+                                      id='icon-btn'
+                                      className='fa fa-save'
+                                      onMouseEnter={() => setHoverSave(true)}
+                                      onMouseLeave={() => setHoverSave(false)}
+                                    />
+                                    {hoverSave && (
+                                      <div className='popup ModalCompile4'>Save</div>
+                                    )}
+                                  </button>
+                                </Col>
+                              </Row>
+                            </Col>
+                            <Col flex={'30px'}>
+                              <div
+                                id='action-btn-container'
+                                className='flex space-around'
+                              >
+                                <Col className='flex flex-row' id='icon-align'>
+                                  <button
+                                    onClick={handleUndo}
+                                    id='link'
+                                    className='flex flex-column'
+                                  >
+                                    <i
+                                      id='icon-btn'
+                                      className='fa fa-undo-alt'
+                                      style={
+                                        workspaceRef.current
+                                          ? workspaceRef.current.undoStack_.length < 1
+                                            ? { color: 'grey', cursor: 'default' }
+                                            : null
+                                          : null
+                                      }
+                                      onMouseEnter={() => setHoverUndo(true)}
+                                      onMouseLeave={() => setHoverUndo(false)}
+                                    />
+                                    {hoverUndo && (
+                                      <div className='popup ModalCompile4'>Undo</div>
+                                    )}
+                                  </button>
+                                  <button
+                                    onClick={handleRedo}
+                                    id='link'
+                                    className='flex flex-column'
+                                  >
+                                    <i
+                                      id='icon-btn'
+                                      className='fa fa-redo-alt'
+                                      style={
+                                        workspaceRef.current
+                                          ? workspaceRef.current.redoStack_.length < 1
+                                            ? { color: 'grey', cursor: 'default' }
+                                            : null
+                                          : null
+                                      }
+                                      onMouseEnter={() => setHoverRedo(true)}
+                                      onMouseLeave={() => setHoverRedo(false)}
+                                    />
+                                    {hoverRedo && (
+                                      <div className='popup ModalCompile4'>Redo</div>
+                                    )}
+                                  </button>
+                                </Col>
+                                <ArduinoLogo
+                                  setHoverCompile={setHoverCompile}
+                                  handleCompile={handleCompile}
+                                  showMenuI={showMenuIcons}
+                                />
+                                {hoverCompile && (
+                                  <div className='popup ModalCompile'>
+                                    Upload to Arduino
+                                  </div>
+                                )}
+                                <DisplayDiagramModal
+                                  image={activity.images}
+                                />
+                                <i
+                                  onClick={() => handleConsole()}
+                                  className='fas fa-terminal hvr-info'
+                                  style={{ marginLeft: '6px' }}
+                                  onMouseEnter={() => setHoverConsole(true)}
+                                  onMouseLeave={() => setHoverConsole(false)}
+                                />
+                                {hoverConsole && (
+                                  <div className='popup ModalCompile'>
+                                    Show Serial Monitor
+                                  </div>
+                                )}
+                                <Dropdown overlay={menu}>
+                                  <i className='fas fa-ellipsis-v'></i>
+                                </Dropdown>
+                              </div>
+                            </Col>
+                          </div>
+                        </div>
+                      )}
+
+                      <Col flex={'30px'}>
+                        <ThreeLines
+                          setHoverMenu={setHoverMenu}
+                          handleMenuCollapse={handleMenuCollapse}
+                        />
+                        {hoverMenu && (
+                          <div className='popup Menu Lines' style={showMenuIcons ? { right: 265} : { right: 0 }}>
+                            {showMenuIcons ? 'Collapse Menu' : 'Expand Menu'}
+                          </div>
+                        )}
+                      </Col>
+
+                    </div>
+
+
+                  </Row>
+                </Col>
+              </Row>
+              <div id='blockly-canvas' />
+            </Spin>
+          </div>
         </div>
 
-        {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-        <xml id='toolbox' is='Blockly workspace'>
-          {
-            // Maps out block categories
-              activity &&
-              activity.toolbox &&
-              activity.toolbox.map(([category, blocks]) => (
-                  <category name={category} is='Blockly category' key={category}>
-                    {
-                      // maps out blocks in category
-                      // eslint-disable-next-line
-                        // EDIT TO LOOP THROUGH TOOLBOXARRAY
-                      blocks.map((block) => {
-                        return (
-                            <block
-                                type={block.name}
-                                is='Blockly block'
-                                key={block.name}
-                            />
-                        );
-                      })
-                    }
-                  </category>
-              ))
-          }
-        </xml>
+        <ConsoleModal
+          show={showConsole}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+        ></ConsoleModal>
+        <PlotterModal
+          show={showPlotter}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+          plotData={plotData}
+          setPlotData={setPlotData}
+          plotId={plotId}
+        />
+      </div>
+
+      {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
+      <xml id='toolbox' is='Blockly workspace'>
+        {
+          // Maps out block categories
+          activity &&
+          activity.toolbox &&
+          activity.toolbox.map(([category, blocks]) => (
+            <category name={category} is='Blockly category' key={category}>
+              {
+                // maps out blocks in category
+                // eslint-disable-next-line
+                blocks.map((block) => {
+                  return (
+                    <block
+                      type={block.name}
+                      is='Blockly block'
+                      key={block.name}
+                    />
+                  );
+                })
+              }
+            </category>
+          ))
+        }
+      </xml>
 
         {compileError && (
             <Alert

@@ -1,7 +1,9 @@
 import React from 'react';
 
-const ArduinoLogo = ({ setHoverCompile, handleCompile }) => {
+const ArduinoLogo = ({ setHoverCompile, handleCompile, showMenuIcons }) => {
   return (
+    <div>
+    {showMenuIcons && (
     <div>
       <svg
         version='1.0'
@@ -29,6 +31,8 @@ const ArduinoLogo = ({ setHoverCompile, handleCompile }) => {
           <path d='M7310 7655 l0 -105 -110 0 -110 0 0 -110 0 -110 110 0 110 0 0 -100 0 -100 105 0 105 0 0 100 0 100 105 0 105 0 0 110 0 110 -105 0 -105 0 0 105 0 105 -105 0 -105 0 0 -105z' />
         </g>
       </svg>
+    </div>
+    )}
     </div>
   );
 };
