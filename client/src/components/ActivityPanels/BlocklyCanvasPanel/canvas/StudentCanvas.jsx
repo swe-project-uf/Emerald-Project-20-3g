@@ -375,6 +375,7 @@ export default function StudentCanvas({ activity }) {
 
   // Function to open the video modal
   const openVideoModal = () => {
+    //setVideoURL(videoURL);
     setShowVideoModal(true);
   };
 
@@ -383,10 +384,7 @@ export default function StudentCanvas({ activity }) {
     setShowVideoModal(false);
   };
 
-  //const handleYoutubeLinkChange = (e) => {
-    //const value = e.target.value;
-    //onYoutubeLinkChange(value);
-  //}
+  const thevideoURL = 'a0eB7tMkvs4';
 
   const assignmentButtonStyle = {
     color: '#FFFFFF',
@@ -554,10 +552,9 @@ export default function StudentCanvas({ activity }) {
                         image={activity.images}
                       />
                       <VideoModal
-                        //onChange={handleYoutubeLinkChange}
                         isOpen={showVideoModal}
                         onClose={closeVideoModal}
-                        videoURL="cNr3r3nT8KE" // Replace with video url saved in MentorActivityDetailModal.jsx
+                        videoURL={thevideoURL} // Replace with video url saved in MentorActivityDetailModal.jsx
                       />
                         <i
                           onClick={() => handleConsole()}

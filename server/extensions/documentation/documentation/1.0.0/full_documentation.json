@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "11/03/2023 5:53:01 PM"
+    "x-generation-date": "12/04/2023 10:19:41 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -11779,6 +11779,9 @@
               "link": {
                 "type": "string"
               },
+              "youtubeLink": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -11873,6 +11876,9 @@
           },
           "activity_template": {
             "type": "string"
+          },
+          "youtubeLink": {
+            "type": "string"
           }
         }
       },
@@ -11916,6 +11922,9 @@
             }
           },
           "activity_template": {
+            "type": "string"
+          },
+          "youtubeLink": {
             "type": "string"
           },
           "created_by": {
@@ -12697,6 +12706,9 @@
                 "activity_template": {
                   "type": "string"
                 },
+                "youtubeLink": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -12833,6 +12845,9 @@
                 "activity_template": {
                   "type": "string"
                 },
+                "youtubeLink": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -12886,6 +12901,9 @@
           },
           "link": {
             "type": "string"
+          },
+          "youtubeLink": {
+            "type": "string"
           }
         }
       },
@@ -12917,6 +12935,9 @@
             "type": "string"
           },
           "link": {
+            "type": "string"
+          },
+          "youtubeLink": {
             "type": "string"
           },
           "created_by": {
@@ -13168,6 +13189,9 @@
                 }
               },
               "activity_template": {
+                "type": "string"
+              },
+              "youtubeLink": {
                 "type": "string"
               },
               "created_by": {
@@ -13549,6 +13573,9 @@
               "link": {
                 "type": "string"
               },
+              "youtubeLink": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -13892,6 +13919,9 @@
                 "type": "string"
               },
               "link": {
+                "type": "string"
+              },
+              "youtubeLink": {
                 "type": "string"
               },
               "created_by": {
@@ -14247,6 +14277,9 @@
               "activity_template": {
                 "type": "string"
               },
+              "youtubeLink": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -14403,6 +14436,9 @@
                   "type": "string"
                 },
                 "link": {
+                  "type": "string"
+                },
+                "youtubeLink": {
                   "type": "string"
                 },
                 "created_by": {

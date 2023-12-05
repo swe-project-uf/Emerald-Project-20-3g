@@ -24,6 +24,7 @@ module.exports = {
       images,
       StandardS,
       link,
+      youtubeLink,
       scienceComponents,
       makingComponents,
       computationComponents,
@@ -105,7 +106,7 @@ module.exports = {
 
     const updatedActivity = await strapi.services.activity.update(
       { id },
-      { description, images, StandardS, link, learning_components: activityComponents }
+      { description, images, StandardS, link, youtubeLink, learning_components: activityComponents }
     );
     return sanitizeEntity(updatedActivity, { model: strapi.models.activity });
   },

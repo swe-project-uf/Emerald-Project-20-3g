@@ -36,6 +36,9 @@
     },
     "link": {
       "type": "string"
+    },
+    "youtubeLink": {
+      "type": "string"
     }
   }
 }

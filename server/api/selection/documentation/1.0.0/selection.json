@@ -616,6 +616,9 @@
               "link": {
                 "type": "string"
               },
+              "youtubeLink": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },

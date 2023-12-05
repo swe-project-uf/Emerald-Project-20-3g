@@ -474,6 +474,7 @@ export const updateActivityDetails = async (
   StandardS,
   images,
   link,
+  youtubeLink,
   scienceComponents,
   makingComponents,
   computationComponents
@@ -488,6 +489,7 @@ export const updateActivityDetails = async (
       StandardS,
       images,
       link,
+      youtubeLink,
       scienceComponents,
       makingComponents,
       computationComponents,

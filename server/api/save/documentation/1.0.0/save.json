@@ -637,6 +637,9 @@
               "activity_template": {
                 "type": "string"
               },
+              "youtubeLink": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },

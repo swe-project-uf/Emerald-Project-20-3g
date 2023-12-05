@@ -118,14 +118,14 @@ const MentorActivityDetailModal = ({
         return
       }
     }
-    if (youtubeLink) {
-      const goodYoutubeLink = checkURL(youtubeLink)
-      if (!goodYoutubeLink) {
-        setYoutubeLinkError(true)
-        message.error("Please Enter a valid Youtube Video URL", 4)
-        return
-      }
-    }
+    //if (youtubeLink) {
+      //const goodYoutubeLink = checkURL(youtubeLink)
+      //if (!goodYoutubeLink) {
+        //setYoutubeLinkError(true)
+        //message.error("Please Enter a valid Youtube Video URL", 4)
+        //return
+      //}
+    //}
     setLinkError(false)
     setYoutubeLinkError(false)
     const res = await updateActivityDetails(
@@ -135,10 +135,10 @@ const MentorActivityDetailModal = ({
       StandardS,
       images,
       link,
+      youtubeLink,
       scienceComponents,
       makingComponents,
       computationComponents,
-      youtubeLink
     )
     if (res.err) {
       message.error(res.err)
@@ -165,13 +165,13 @@ const MentorActivityDetailModal = ({
     //setOpen(true)
 };
 
-  const openVideoModal = () => {
-    setShowVideoModal(true);
+  const handleSaveVideoURL = () => {
+    setVideoURL(youtubeLink);
   };
 
-  const closeVideoModal = () => {
-    setShowVideoModal(false);
-  };
+  //const handleInputChange = (e) => {
+    //setVideoURLInput(e.target.value);
+  //};
 
   const handleYoutubeLinkChange = (e) => {
     setYoutubeLink(e.target.value);
@@ -293,14 +293,14 @@ const MentorActivityDetailModal = ({
         </Form.Item>
         <Form.Item
           id="form-label"
-          label="Youtube Video URL (Optional)"
+          label="Youtube Video Identifier (what comes after 'watch?v=')"
           >
             <Input
-              onChange={handleYoutubeLinkChange}
+              onChange={ handleYoutubeLinkChange }
               className="input"
               value={youtubeLink}
               style={(youtubeLinkError ? { backgroundColor: "#FFCCCC" } : {})}
-              placeholder="Enter a Youtube video URL"
+              placeholder="Enter a Youtube video unique indentifier"
               ></Input>
           </Form.Item>
         <Form.Item
