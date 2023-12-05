@@ -38,7 +38,6 @@ export default function StudentCanvas({ activity }) {
   const [saves, setSaves] = useState({});
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
-  const [splitPaneView, setSplitPane] = useState(false);
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -47,10 +46,6 @@ export default function StudentCanvas({ activity }) {
 
   const replayRef = useRef([]);
   const clicks = useRef(0);
-
-  function splitViewUpdate(checked){
-    setSplitPane(checked);
-  }
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -360,12 +355,10 @@ export default function StudentCanvas({ activity }) {
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-column'>
-        <div className='flex flex-row'>
-          <updateSplitView
-            splitViewUpdate = {splitViewUpdate}
-          />
-          <SplitPane split='vertical'>
-          <Pane minSize='150px' initialSize='300px' maxSize='700px'>
+        {activity.splitPane ? 
+          <div className='flex flex-row'>
+            <SplitPane split='vertical'>
+            <Pane minSize='150px' initialSize='300px' maxSize='700px'>
             <Lesson
               lesson_title='Sample Lesson Title'
               lesson_contents='Sample lesson content'
@@ -519,7 +512,162 @@ export default function StudentCanvas({ activity }) {
           </div>
           </SplitPane>
           </div>
+          : 
+          <>
+          <Lesson
+            lesson_title='Sample Lesson Title'
+            lesson_contents='Sample lesson content'
+          />
+          <div className='flex flex-row'>
+          <div
+            id='bottom-container'
+            className='flex flex-column vertical-container overflow-visible'
+          >
+            <Spin
+              tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+              className='compilePop'
+              size='large'
+              spinning={selectedCompile}
+            >
+              <Row id='icon-control-panel'>
+                <Col flex='none' id='section-header'>
+                  {activity.lesson_module_name}
+                </Col>
+                <Col flex='auto'>
+                  <Row align='middle' justify='end' id='description-container'>
+                    <Col flex={'30px'}>
+                      <button
+                        onClick={handleGoBack}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i id='icon-btn' className='fa fa-arrow-left' />
+                      </button>
+                    </Col>
+                    <Col flex='auto' />
 
+                    <Col flex={'300px'}>
+                      {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
+                    </Col>
+                    <Col flex={'350px'}>
+                      <Row>
+                        <Col className='flex flex-row' id='icon-align'>
+                          <VersionHistoryModal
+                            saves={saves}
+                            lastAutoSave={lastAutoSave}
+                            defaultTemplate={activity}
+                            getFormattedDate={getFormattedDate}
+                            loadSave={loadSave}
+                            pushEvent={pushEvent}
+                          />
+                          <button
+                            onClick={handleManualSave}
+                            id='link'
+                            className='flex flex-column'
+                          >
+                            <i
+                              id='icon-btn'
+                              className='fa fa-save'
+                              onMouseEnter={() => setHoverSave(true)}
+                              onMouseLeave={() => setHoverSave(false)}
+                            />
+                            {hoverSave && (
+                              <div className='popup ModalCompile4'>Save</div>
+                            )}
+                          </button>
+                        </Col>
+
+                        <Col className='flex flex-row' id='icon-align'>
+                          <button
+                            onClick={handleUndo}
+                            id='link'
+                            className='flex flex-column'
+                          >
+                            <i
+                              id='icon-btn'
+                              className='fa fa-undo-alt'
+                              style={
+                                workspaceRef.current
+                                  ? workspaceRef.current.undoStack_.length < 1
+                                    ? { color: 'grey', cursor: 'default' }
+                                    : null
+                                  : null
+                              }
+                              onMouseEnter={() => setHoverUndo(true)}
+                              onMouseLeave={() => setHoverUndo(false)}
+                            />
+                            {hoverUndo && (
+                              <div className='popup ModalCompile4'>Undo</div>
+                            )}
+                          </button>
+                          <button
+                            onClick={handleRedo}
+                            id='link'
+                            className='flex flex-column'
+                          >
+                            <i
+                              id='icon-btn'
+                              className='fa fa-redo-alt'
+                              style={
+                                workspaceRef.current
+                                  ? workspaceRef.current.redoStack_.length < 1
+                                    ? { color: 'grey', cursor: 'default' }
+                                    : null
+                                  : null
+                              }
+                              onMouseEnter={() => setHoverRedo(true)}
+                              onMouseLeave={() => setHoverRedo(false)}
+                            />
+                            {hoverRedo && (
+                              <div className='popup ModalCompile4'>Redo</div>
+                            )}
+                          </button>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col flex={'180px'}>
+                      <div
+                        id='action-btn-container'
+                        className='flex space-around'
+                      >
+                        <ArduinoLogo
+                          setHoverCompile={setHoverCompile}
+                          handleCompile={handleCompile}
+                        />
+                        {hoverCompile && (
+                          <div className='popup ModalCompile'>
+                            Upload to Arduino
+                          </div>
+                        )}
+                      <DisplayDiagramModal
+                        image={activity.images}
+                      />
+                        <i
+                          onClick={() => handleConsole()}
+                          className='fas fa-terminal hvr-info'
+                          style={{ marginLeft: '6px' }}
+                          onMouseEnter={() => setHoverConsole(true)}
+                          onMouseLeave={() => setHoverConsole(false)}
+                        />
+                        {hoverConsole && (
+                          <div className='popup ModalCompile'>
+                            Show Serial Monitor
+                          </div>
+                        )}
+                        <Dropdown overlay={menu}>
+                          <i className='fas fa-ellipsis-v'></i>
+                        </Dropdown>
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <div id='blockly-canvas' />
+            </Spin>
+          </div>
+          </div>
+          </>
+        }
           <ConsoleModal
             show={showConsole}
             connectionOpen={connectionOpen}

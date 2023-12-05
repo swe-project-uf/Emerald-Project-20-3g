@@ -41,7 +41,6 @@ const MentorActivityDetailModal = ({
   useEffect(() => {
     const showActivityDetailsModal = async () => {
       const response = await getActivity(selectActivity.id)
-      console.log(response.data)
       if (response.err) {
         message.error(response.err)
         return
@@ -80,13 +79,7 @@ const MentorActivityDetailModal = ({
 
   function handleSplitPaneChange(e) {
     setSplitPane(e.target.checked);
-    console.log(splitPane); //prints out the past state
   }
-
-  /*function updateSplitView({splitViewUpdate}){
-    splitViewUpdate(checked);
-    console.log(checked);
-  }*/
 
   const checkURL = n => {
     const regex =
