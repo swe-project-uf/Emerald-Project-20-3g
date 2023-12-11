@@ -12,27 +12,35 @@ Cloud-based programming interface
 ## Features by Emerald - Project 20 - 3g
 - **Video Button**
   - Button to link to a video.
-  - ![VideoButton](collin 1.png)
+  - ![VideoButton](collin1.png)
+  - ![VideoButton](collin2.png)
   - [Watch Video Button in action (Video)](https://youtu.be/u2pw49uPwQk)
 
 - **Collapsable Menu**
   - Collapse existing buttons down to a single drop-down menu when resized.
-  - ![Menu](https://github.com/swe-project-uf/Emerald-Project-20-3g/blob/develop/adam%201.png)
+  - ![Menu](adam1.png)
+  - ![Menu](adam2.png)
   - [Watch Collapsable Menu in action (Video)](https://drive.google.com/file/d/1svuNaeaJuKREgFZk_KflyrpjStPfgfdD/view?resourcekey)
 
 - **Split View**
   - Make a split pane view and an option for teachers to enable it.
+  - ![view](eric1.png)
+  - ![view](eric2.png)
+  - ![view](eric3.png)
   - [Watch Split View in action (Video)](https://drive.google.com/file/d/1ze44VVlc-Zr1I0PqKZe3kguVCEsnRr2N/view?resourcekey)
 
-- **Feature 3: Exciting Enhancement**
-  - Description of the feature.
-  - ![Screenshot 3](screenshots/feature3.png)
-  - [Watch Feature 3 in action (Video)](https://example.com/feature3_video.mp4)
+- **Mobile Resizing & Hover Effects**
+  - Allows for mobile compatibility for workspace view and emphasis when selecting buttons.
+  - ![resize](daniel1.png)
+  - ![resize](daniel2.png)
+  - [Watch Mobile Resizing & Hover Effects in action (Video)](https://example.com/feature3_video.mp4)
 
-- **Feature 3: Exciting Enhancement**
-  - Description of the feature.
-  - ![Screenshot 3](screenshots/feature3.png)
-  - [Watch Feature 3 in action (Video)](https://example.com/feature3_video.mp4)
+- **Buttons/Lessons for going between Activities**
+  - Allows for students to go between lesson/activity content while in the workspace.
+  - ![bw](cj-rc1.png)
+  - ![bw](cj-rc2.png)
+  - ![bw](cj-rc3.png)
+  - [Watch Buttons/Lessons for going between Activities in action (Video)](https://drive.google.com/file/d/1-O0m_Sb7pOdK2NdaC3FcJQxouY-KnhOr/view?resourcekey)
 
 
 ## Application
