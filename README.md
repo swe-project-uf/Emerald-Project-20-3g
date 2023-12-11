@@ -41,6 +41,20 @@ Cloud-based programming interface
   - ![bw](cj-rc2.png)
   - ![bw](cj-rc3.png)
   - [Watch Buttons/Lessons for going between Activities in action (Video)](https://drive.google.com/file/d/1-O0m_Sb7pOdK2NdaC3FcJQxouY-KnhOr/view?resourcekey)
+ 
+  
+<br/>
+
+## How to run locally
+  - Go to "Running" subheading under Development
+
+## Outstanding Work
+  - Merge and handling conflicts
+
+## Built Upon
+  - Help from TAs
+  - Strapi 
+
 
 
 ## Application
