@@ -12,10 +12,12 @@ Cloud-based programming interface
 ## Features by Emerald - Project 20 - 3g
 - **Video Button**
   - Button to link to a video.
+  - ![VideoButton](collin 1.png)
   - [Watch Video Button in action (Video)](https://youtu.be/u2pw49uPwQk)
 
 - **Collapsable Menu**
   - Collapse existing buttons down to a single drop-down menu when resized.
+  - ![Menu](https://github.com/swe-project-uf/Emerald-Project-20-3g/blob/develop/adam%201.png)
   - [Watch Collapsable Menu in action (Video)](https://drive.google.com/file/d/1svuNaeaJuKREgFZk_KflyrpjStPfgfdD/view?resourcekey)
 
 - **Split View**
