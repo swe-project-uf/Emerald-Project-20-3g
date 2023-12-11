@@ -9,6 +9,30 @@ Cloud-based programming interface
 
 <br/>
 
+## Features by Emerald - Project 20 - 3g
+- **Video Button**
+  - Button to link to a video.
+  - [Watch Video Button in action (Video)](https://youtu.be/u2pw49uPwQk)
+
+- **Collapsable Menu**
+  - Collapse existing buttons down to a single drop-down menu when resized.
+  - [Watch Collapsable Menu in action (Video)](https://drive.google.com/file/d/1svuNaeaJuKREgFZk_KflyrpjStPfgfdD/view?resourcekey)
+
+- **Split View**
+  - Make a split pane view and an option for teachers to enable it.
+  - [Watch Split View in action (Video)](https://drive.google.com/file/d/1ze44VVlc-Zr1I0PqKZe3kguVCEsnRr2N/view?resourcekey)
+
+- **Feature 3: Exciting Enhancement**
+  - Description of the feature.
+  - ![Screenshot 3](screenshots/feature3.png)
+  - [Watch Feature 3 in action (Video)](https://example.com/feature3_video.mp4)
+
+- **Feature 3: Exciting Enhancement**
+  - Description of the feature.
+  - ![Screenshot 3](screenshots/feature3.png)
+  - [Watch Feature 3 in action (Video)](https://example.com/feature3_video.mp4)
+
+
 ## Application
 
 ### `client` 
